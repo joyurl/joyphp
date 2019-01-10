@@ -1,6 +1,5 @@
 <?php
 
-
 namespace joyphp;
 
 
@@ -45,7 +44,7 @@ class Cookie
     public function __set($name , $value)
     {
         if($value == null){
-            return self:del($name);
+            return self::del($name);
         }
         return self::set($name , $value);
     }
