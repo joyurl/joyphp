@@ -1,0 +1,329 @@
+
+Central Processing Unit
+
+MVP
+
+PMV 模型：
+P - Presenter 主控：负责接收请求参数并调用模块处理请求，将View结果返回给用户
+                    注：为交互层(薄层)，使用标准接口，应用层(模块)与视图层的调整与此无关联）
+M - Module    模块：负责处理逻辑和数据（与数据模型{不限于数据库}交互获得数据）
+V - View      视图：负责处理显示效果，将数据与模板融合为HTML内容
+                
+
+
+C - Controll  控制器
+M - Model     数据模型
+D - Database  数据接口（负责数据库存取，即与数据表直接打交道）
+
+
+TP缺点：
+1 每个请求要对应一个控制器（使用标准模块替代，并且可加入任意模块，实现模块化搭建）
+2 每个数据表要对应一个模型（使用标准模型替代）
+3 每个方法需要对定的Templates作相应调整（可直接在View中调用标准模型，不需要再为view写控制器方法）
+4 Templates语法相对较复杂（使用简化语法，兼容多种Templates）
+5 除静态目录外，很多目录为可写（改为可在只读情况下运行，只缓存静态文件）
+6 未提供标准的后台管理模块（提供标准后台模块、会员模块、[财务模块]、[支付模块]）
+
+
+结构图：
+
+        Client   
+          |     
+ View -- Presenters  --> API-RPC(As Module)  -->  Server(Preseters) --> Client
+          |   
+        Module  <-- API-RPC(As Module)  <--  Server <-- Module
+          |  |<-- Cache
+     local Module <--  Other Resources
+          |      
+       DB  Model 
+          |      
+       Database  
+
+
+问题
+  1 如果类按标准书写，可自动生成开发文档。标准如何定??
+  2 单元测试时如何将错误返回到结果中?? 如何支持断点调试??
+    (1) debug.php请求/debug/load.php 是否有错误，如果语法有错误，则显示错误(Error类处理debug错误)，不进入调试模式
+    (2) 请求成功后，显示调用方法需要的参数
+    (3) 填写参数后提交调试
+    (4) 根据参数返回相关结果（如果程序有错误则显示错误）
+    
+    _class=对象名称（和文件关联）; _method=调用方法; _param=调用参数(json格式);
+    _debug:断点位置 ，0 为完全执行。
+
+
+
+对象： 
++ P           主控   Presenter  （不直接使用View和Module对象）
++ Module      [模块]  （集成到CP中，不单独使用）
++ View        [视图]  （集成到CP中，不单独使用）
++ DB          数据库模型
++ R(Request)  请求参数管理对象（集成路由、Cookie及Session）
+
++ log       日志    
++ error     错误及异常处理
++ request   参数获取
++ cache：   文件缓存
++ session： session
++ route：   路由设置
++ template  模板解板
+
+
+A 一般高并发
+
+   单server
+   1 系统文件（包括PHP和系统图片/css/js等）放到内存
+   2 用户主表缓存到内存
+   3 采用SSD存放静态附件（用户上传的文件；公用的ZIP/视频等大文件）
+
+
+B 超高并发结构
+
+  用户
+   |
+  前端S  （负责执行PHP、HTML/css/js(和Session，均用内存虚拟磁盘来存放文件）
+   |  ＼ 
+   |     后端S  （负责处理静态系统文件: jpg/gif放入内存)、静态附件（zip/视频，直接存放入SSD）
+   |
+ 数据库S - 从数据库S(SSD即时) - 当地备份(高频率比如10秒一次) - 异地备份(低频率比如5分钟)
+   |
+ DB核心数据在内存运行
+ 
+ 负载均衡：分摊访问负荷
+ 冗余：防止磁盘损坏（在系统层删除数据时， 冗余服务器数据同步丢失，因此需要备份）
+ 备份：防止数据意外丢失（比如识操作）
+
+-----------------------------------
+
+think处理方式
+
+/模块/控制器/方法/参数
+
+/模型/方法?参数 (可使用别名)
+
+-----------------------------------
+
+        set_error_handler([__CLASS__, 'appError']);
+        set_exception_handler([__CLASS__, 'appException']);
+        register_shutdown_function([__CLASS__, 'appShutdown']);
+        
+        
+        register_tick_function
+        
+filter_var("someone@example....com", FILTER_VALIDATE_EMAIL)
+
+FILTER_UNSAFE_RAW	不进行任何过滤，去除或编码特殊字符。(FILTER_DEFAULT)
+FILTER_CALLBACK	调用用户自定义函数来过滤数据。
+
+FILTER_VALIDATE_INT	把值作为整数来验证。
+FILTER_VALIDATE_BOOLEAN	把值作为布尔选项来验证。如果是 "1"、"true"、"on" 和 "yes"，则返回 TRUE。如果是 "0"、"false"、"off"、"no" 和 ""，则返回 FALSE。否则返回 NULL。
+FILTER_VALIDATE_FLOAT	把值作为浮点数来验证。
+FILTER_VALIDATE_REGEXP	根据 regexp（一种兼容 Perl 的正则表达式）来验证值。
+FILTER_VALIDATE_URL	把值作为 URL 来验证。
+FILTER_VALIDATE_EMAIL	把值作为 e-mail 地址来验证。
+FILTER_VALIDATE_IP	把值作为 IP 地址来验证，只限 IPv4 或 IPv6 或 不是来自私有或者保留的范围。
+FILTER_VALIDATE_DOMAIN
+FILTER_VALIDATE_MAC
+
+FILTER_SANITIZE_STRING	去除标签，去除或编码特殊字符。
+FILTER_SANITIZE_STRIPPED	"string" 过滤器的别名。
+FILTER_SANITIZE_ENCODED	URL-encode 字符串，去除或编码特殊字符。
+FILTER_SANITIZE_SPECIAL_CHARS	HTML 转义字符 '"<>& 以及 ASCII 值小于 32 的字符。
+FILTER_SANITIZE_FULL_SPECIAL_CHARS  
+FILTER_SANITIZE_EMAIL	删除所有字符，除了字母、数字以及 !#$%&'*+-/=?^_`{|}~@.[]
+FILTER_SANITIZE_URL	删除所有字符，除了字母、数字以及 $-_.+!*'(),{}|\^~[]`<>#%";/?:@&=
+FILTER_SANITIZE_NUMBER_INT	删除所有字符，除了数字和 +-
+FILTER_SANITIZE_NUMBER_FLOAT	删除所有字符，除了数字、+- 以及 .,eE
+FILTER_SANITIZE_MAGIC_QUOTES	应用 addslashes()。
+
+ID	Used with	Description
+FILTER_FLAG_STRIP_LOW	FILTER_SANITIZE_ENCODED, FILTER_SANITIZE_SPECIAL_CHARS, FILTER_SANITIZE_STRING, FILTER_UNSAFE_RAW	Strips characters that have a numerical value <32.
+FILTER_FLAG_STRIP_HIGH	FILTER_SANITIZE_ENCODED, FILTER_SANITIZE_SPECIAL_CHARS, FILTER_SANITIZE_STRING, FILTER_UNSAFE_RAW	Strips characters that have a numerical value >127.
+FILTER_FLAG_STRIP_BACKTICK	FILTER_SANITIZE_ENCODED, FILTER_SANITIZE_SPECIAL_CHARS, FILTER_SANITIZE_STRING, FILTER_UNSAFE_RAW	Strips backtick characters.
+FILTER_FLAG_ALLOW_FRACTION	FILTER_SANITIZE_NUMBER_FLOAT	Allows a period (.) as a fractional separator in numbers.
+FILTER_FLAG_ALLOW_THOUSAND	FILTER_SANITIZE_NUMBER_FLOAT, FILTER_VALIDATE_FLOAT	Allows a comma (,) as a thousands separator in numbers.
+FILTER_FLAG_ALLOW_SCIENTIFIC	FILTER_SANITIZE_NUMBER_FLOAT	Allows an e or E for scientific notation in numbers.
+FILTER_FLAG_NO_ENCODE_QUOTES	FILTER_SANITIZE_STRING	If this flag is present, single (') and double (") quotes will not be encoded.
+FILTER_FLAG_ENCODE_LOW	FILTER_SANITIZE_ENCODED, FILTER_SANITIZE_STRING, FILTER_SANITIZE_RAW	Encodes all characters with a numerical value <32.
+FILTER_FLAG_ENCODE_HIGH	FILTER_SANITIZE_ENCODED, FILTER_SANITIZE_SPECIAL_CHARS, FILTER_SANITIZE_STRING, FILTER_SANITIZE_RAW	Encodes all characters with a numerical value >127.
+FILTER_FLAG_ENCODE_AMP	FILTER_SANITIZE_STRING, FILTER_SANITIZE_RAW	Encodes ampersands (&).
+FILTER_NULL_ON_FAILURE	FILTER_VALIDATE_BOOLEAN	Returns NULL for unrecognized boolean values.
+FILTER_FLAG_ALLOW_OCTAL	FILTER_VALIDATE_INT	Regards inputs starting with a zero (0) as octal numbers. This only allows the succeeding digits to be 0-7.
+FILTER_FLAG_ALLOW_HEX	FILTER_VALIDATE_INT	Regards inputs starting with 0x or 0X as hexadecimal numbers. This only allows succeeding characters to be a-fA-F0-9.
+FILTER_FLAG_EMAIL_UNICODE	FILTER_VALIDATE_EMAIL	7.1.0 Allows the local part of the email address to contain Unicode characters.
+FILTER_FLAG_IPV4	FILTER_VALIDATE_IP	Allows the IP address to be in IPv4 format.
+FILTER_FLAG_IPV6	FILTER_VALIDATE_IP	Allows the IP address to be in IPv6 format.
+FILTER_FLAG_NO_PRIV_RANGE	FILTER_VALIDATE_IP	
+Fails validation for the following private IPv4 ranges: 10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16.
+
+Fails validation for the IPv6 addresses starting with FD or FC.
+
+FILTER_FLAG_NO_RES_RANGE	FILTER_VALIDATE_IP	
+Fails validation for the following reserved IPv4 ranges: 0.0.0.0/8, 169.254.0.0/16, 127.0.0.0/8 and 240.0.0.0/4.
+
+Fails validation for the following reserved IPv6 ranges: ::1/128, ::/128, ::ffff:0:0/96 and fe80::/10.
+
+FILTER_FLAG_SCHEME_REQUIRED	FILTER_VALIDATE_URL	Requires the URL to contain a scheme part.
+FILTER_FLAG_HOST_REQUIRED	FILTER_VALIDATE_URL	Requires the URL to contain a host part.
+FILTER_FLAG_PATH_REQUIRED	FILTER_VALIDATE_URL	Requires the URL to contain a path part.
+FILTER_FLAG_QUERY_REQUIRED	FILTER_VALIDATE_URL	Requires the URL to contain a query string.
+FILTER_REQUIRE_SCALAR		Requires the value to be scalar.
+FILTER_REQUIRE_ARRAY		Requires the value to be an array.
+FILTER_FORCE_ARRAY		If the value is a scalar, it is treated as array with the scalar value as only element.
+http://php.net/manual/zh/filter.filters.flags.php
+
+filter_id('email')
+int:257
+boolean: 258 
+float: 259 
+string: 513 
+stripped: 513 
+encoded: 514 
+special_chars: 515 
+unsafe_raw: 516 
+email: 517 
+url: 518 
+validate_regexp: 272 
+validate_url: 273 
+validate_email: 274 
+validate_ip: 275 
+number_int: 519 
+number_float: 520 
+magic_quotes: 521 
+callback: 1024
+
+print_r(array_flip(array_map('filter_id', array_combine(filter_list(), filter_list()))));
+
+array_combine(keys,values); 合并两个数组
+array_map( callable $callback , array $array1 [, array $... ] ) — 为数组的每个元素应用回调函数
+
+sanitize
+validate
+
+if (is_scalar($var))   integer、float、string 或 boolean的变量
+is_callable 是否可用
+
+INSERT ... ON DUPLICATE KEY UPDATE a=a+1
+duplicate
+
+
+29*12=348+170= 528 - 58 = 470
+-----------------------------------
+
+11+13
+
+在Request或数据库$data的key值可加修饰符(会自动转换)，以下修饰符含义为
+/a  数组 array
+/b  布尔 bool
+/d  整数 digital
+/f  浮点 float
+/s  字符 string（默认的）
+
+
+DB专用
+/t  时间 time
+    空/datetime= date('Y-m-d H:i:s');
+    date = date('Y-m-d');
+    time = date('H:i:s');
+    d =time();
+    $data['add_date/t']='datetime'; //SQL:add_date=$php:date('Y-m-d H:i:s');
+
+/add 整数递加 add ，比如$data['count']=2;  则表示加2。 值为-2则表示减2（格式只允许字段名和加减号及数字）
+    $data['count/add']=1; //SQL: count=count+1
+
+/replace 字符串替换  replace
+    $data['name/replace']=Array('abc','123');  //SQL: name=REPLACE(name,'abc','123')
+    $data['name/replace']='abc';  //SQL: name=REPLACE(name,'abc','')
+
+/fun  系统函数function 比如data['add_date']='NOW'，SQL为add_date=NOW() 
+    $data['add_date/fun']='NOW()'; //SQL: add_date=NOW()
+
+/r  原生数据raw
+    $data['count/r']="id"; //SQL: count=id
+    $data['count/r']="if(date>'2018-01-01',count+1,1)";  //SQL count=if(date>'2018-01-01',count+1,1)
+
+
+模板规则
+变量{}，标签{TAG}{/TAG}
+
+1 变量
+  用户变量：{$var}
+  系统变量：{$get.name} {$cookie.name} {$session.name}  {$config.name}  {$lang.name}
+  常量： {$const.name}
+
+2 格式化显示规则
+  {$var@substr=0,3&strtoupper&strtolower&strreplace=aaa,bbb}
+  {$var@date=Y-m-d H:i:s}等效于 <?php date("Y-m-d H:i:s",$var);?>
+  {$var@split=[\s,]+::0}  等效于 <?php $tmp=preg_split("/[\s,]+/",$var); echo $tmp[0];?>
+  {$var@call=app\modelname\controller\ctrlname::functionname}  functionname参数为var
+
+3 运算符，第二个参数可以为变量
+  {$var+2}
+  {$var-2}
+  {$var*2}
+  {$var/2}
+  {$var%2}
+  {$var/2,0}  运算后取整
+  {$var/2,2}  运算后保留两位小数(允许值0-5)
+  {$var,2}    四舍五入保留两位小数
+  
+4 内置标签库
+  一类：不解析里面的任何标签（但可以嵌套）
+{DEMO}演示内容或注释，不解析，不显示{/DEMO}
+{CODE}显示原始代码{code}，不处理变量及其它任何规则{/CODE}
+
+ 二类：LIST嵌套LIST只允许两层，不能再嵌套引用标签，但可嵌套其它所有标签
+{list(arrvar)}HTML内容 {arrvar[name]} 内容{/list(arrvar)}
+{list(rs,i,1)}
+    The.{i}<br>
+    {list(rs[key],j,1)}
+        No.{j}: {key[row3]} - {key[rows1]}<br>
+    {/list(rs[key])}
+{/list(rs)}
+
+
+ 三类：不能再嵌套二三类标签（list和SWITCH）
+{swith(var)}
+  {case(value1)}等于value1时{/case}
+  {case(!:value1)}不等于value1时{/case}
+  {case(value2,value3,value4)}等于几个值中的任一值时{/case}
+  {case(!:value2,value3,value4)}不等于几个值中的任一值时{/case}
+  {case(+:value1,value2)}在value1(含)及value2(含)之间{/case}
+  {case(-:value1,value2)}不在value1(含)及value2(含)之间{/case}
+  {case(>:num)}大于num时{/case}
+  {case(>=:num)}大于等于num时{/case}
+  {case(<:num)}小于num时{/case}
+  {case(<=:num)}小于等于num时{/case}
+  {case();();()}同时满足多个条件{/case}
+{/swith(var)}
+   case不会break，如果需要break，则把case换为BREAK。
+   可当if(){} else if(){} ... 使用
+
+  四类：无限制标签，可任意嵌套所有标签
+{if(boolvar)}显示的内容{/if(boolvar)}
+{if(!boolvar)}显示的内容{/if(boolvar)}
+{if(boolvar)}真{else(boolvar)}假{/if(boolvar)}
+   相当于 <?php echo if(boolvar) {echo "真";} else {echo "假";} ?>
+    或    <?php echo !empty(boolvar) ? "真" :"假";
+{for(i,1,100,+1)}{i}{/for(i)}
+{find(var,str)}如果var中包含str时显示此值{/find(var)}
+{nofind(var,str)}如果var中不包含str时显示此值{/nofind(var)}
+
+5 引用规则（嵌套时仅限三、四类标签内才有效）
+{include(filaname)}
+{loadcss(filename)}
+    等于：<link rel="stylesheet" type="text/css" href="[filename=/static/css/style.css]" />
+{loadjs(filename)}
+    等于：<script type='text/javascript' src='[filename=/static/js/common.js]'>
+{call('var':'模板中的变量名','type':'对象类型system/app/plus','class':'对象名称','method':'方法名称','para':{'para1':'value1','para2':'value2'})}
+
+6 模板布局?? layout
+{layout(__REPLACE__,Layout/default)}
+
+{layout name="Layout/default" replace="[__REPLACE__]" /}
+ 当前模板载入Layout/default布局，并替换其中{__REPLACE__}位置
+
+7 模板继承 ??(不需要??)
+{extend name="base" /}
+
+
