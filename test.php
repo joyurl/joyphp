@@ -1,5 +1,10 @@
 <?php 
 
+echo date('W-w',strtotime('2018-01-01')),'<br>';
+echo date('W-w',strtotime('2018-01-02')),'<br>';
+echo date('W-w',strtotime('2018-12-31')),'<br>';
+echo date('W-w',strtotime('2026-01-02')),'<br>';
+exit;
 
 echo md5('admin123');exit;
 	
