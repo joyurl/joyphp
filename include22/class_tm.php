@@ -252,7 +252,7 @@ class TM extends TB
 
 				$_fieldset='';
 				if(isset($sets['fieldset'])) $_fieldset=preg_replace('/[^-_0-9a-z]/i','',$sets['fieldset']);
-				$_fieldset=(!empty($_fieldset)?$_fieldset:$_field)
+				$_fieldset=(!empty($_fieldset)?$_fieldset:$_field);
 				if(empty($_fieldset)) break;
 				$_tmp=$_tmp." ".$_fieldset;
 				$_value=(isset($sets['value'])?trim($sets['value']):"");
@@ -299,7 +299,7 @@ class TM extends TB
 	protected function formatNum($value,$formart=0){
 		$value=preg_replace('/\s/','',$value);
 		$value=str_replace(',','',trim($value));
-		if(!empty(preg_match('/^(-[0-9]|[0-9])[0-9]*(\.[0-9]+)?$/',$value)) $value='';
+		if(!empty(preg_match('/^(-[0-9]|[0-9])[0-9]*(\.[0-9]+)?$/',$value))) $value='';
 		if($formart) $value=0+$value;
 		return $value;
 	}
