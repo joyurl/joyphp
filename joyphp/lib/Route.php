@@ -15,7 +15,7 @@ use think\exception\HttpException;
 
 class Route
 {
-    // Â·ÓÉ¹æÔò
+    // è·¯ç”±è§„åˆ™
     private static $rules = [
         'get'     => [],
         'post'    => [],
@@ -31,7 +31,7 @@ class Route
         'name'    => [],
     ];
 
-    // RESTÂ·ÓÉ²Ù×÷·½·¨¶¨Òå
+    // RESTè·¯ç”±æ“ä½œæ–¹æ³•å®šä¹‰
     private static $rest = [
         'index'  => ['get', '', 'index'],
         'create' => ['get', '/create', 'create'],
@@ -42,7 +42,7 @@ class Route
         'delete' => ['delete', '/:id', 'delete'],
     ];
 
-    // ²»Í¬ÇëÇóÀàĞÍµÄ·½·¨Ç°×º
+    // ä¸åŒè¯·æ±‚ç±»å‹çš„æ–¹æ³•å‰ç¼€
     private static $methodPrefix = [
         'get'    => 'get',
         'post'   => 'post',
@@ -51,25 +51,25 @@ class Route
         'patch'  => 'patch',
     ];
 
-    // ×ÓÓòÃû
+    // å­åŸŸå
     private static $subDomain = '';
-    // ÓòÃû°ó¶¨
+    // åŸŸåç»‘å®š
     private static $bind = [];
-    // µ±Ç°·Ö×éĞÅÏ¢
+    // å½“å‰åˆ†ç»„ä¿¡æ¯
     private static $group = [];
-    // µ±Ç°×ÓÓòÃû°ó¶¨
+    // å½“å‰å­åŸŸåç»‘å®š
     private static $domainBind;
     private static $domainRule;
-    // µ±Ç°ÓòÃû
+    // å½“å‰åŸŸå
     private static $domain;
-    // µ±Ç°Â·ÓÉÖ´ĞĞ¹ı³ÌÖĞµÄ²ÎÊı
+    // å½“å‰è·¯ç”±æ‰§è¡Œè¿‡ç¨‹ä¸­çš„å‚æ•°
     private static $option = [];
 
     /**
-     * ×¢²á±äÁ¿¹æÔò
+     * æ³¨å†Œå˜é‡è§„åˆ™
      * @access public
-     * @param string|array  $name ±äÁ¿Ãû
-     * @param string        $rule ±äÁ¿¹æÔò
+     * @param string|array  $name å˜é‡å
+     * @param string        $rule å˜é‡è§„åˆ™
      * @return void
      */
     public static function pattern($name = null, $rule = '')
@@ -82,12 +82,12 @@ class Route
     }
 
     /**
-     * ×¢²á×ÓÓòÃû²¿Êğ¹æÔò
+     * æ³¨å†Œå­åŸŸåéƒ¨ç½²è§„åˆ™
      * @access public
-     * @param string|array  $domain ×ÓÓòÃû
-     * @param mixed         $rule Â·ÓÉ¹æÔò
-     * @param array         $option Â·ÓÉ²ÎÊı
-     * @param array         $pattern ±äÁ¿¹æÔò
+     * @param string|array  $domain å­åŸŸå
+     * @param mixed         $rule è·¯ç”±è§„åˆ™
+     * @param array         $option è·¯ç”±å‚æ•°
+     * @param array         $pattern å˜é‡è§„åˆ™
      * @return void
      */
     public static function domain($domain, $rule = '', $option = [], $pattern = [])
@@ -97,14 +97,14 @@ class Route
                 self::domain($key, $item, $option, $pattern);
             }
         } elseif ($rule instanceof \Closure) {
-            // Ö´ĞĞ±Õ°ü
+            // æ‰§è¡Œé—­åŒ…
             self::setDomain($domain);
             call_user_func_array($rule, []);
             self::setDomain(null);
         } elseif (is_array($rule)) {
             self::setDomain($domain);
             self::group('', function () use ($rule) {
-                // ¶¯Ì¬×¢²áÓòÃûµÄÂ·ÓÉ¹æÔò
+                // åŠ¨æ€æ³¨å†ŒåŸŸåçš„è·¯ç”±è§„åˆ™
                 self::registerRules($rule);
             }, $option, $pattern);
             self::setDomain(null);
@@ -119,10 +119,10 @@ class Route
     }
 
     /**
-     * ÉèÖÃÂ·ÓÉ°ó¶¨
+     * è®¾ç½®è·¯ç”±ç»‘å®š
      * @access public
-     * @param mixed     $bind °ó¶¨ĞÅÏ¢
-     * @param string    $type °ó¶¨ÀàĞÍ Ä¬ÈÏÎªmodule Ö§³Ö namespace class controller
+     * @param mixed     $bind ç»‘å®šä¿¡æ¯
+     * @param string    $type ç»‘å®šç±»å‹ é»˜è®¤ä¸ºmodule æ”¯æŒ namespace class controller
      * @return mixed
      */
     public static function bind($bind, $type = 'module')
@@ -131,10 +131,10 @@ class Route
     }
 
     /**
-     * ÉèÖÃ»òÕß»ñÈ¡Â·ÓÉ±êÊ¶
+     * è®¾ç½®æˆ–è€…è·å–è·¯ç”±æ ‡è¯†
      * @access public
-     * @param string|array     $name Â·ÓÉÃüÃû±êÊ¶ Êı×é±íÊ¾ÅúÁ¿ÉèÖÃ
-     * @param array            $value Â·ÓÉµØÖ·¼°±äÁ¿ĞÅÏ¢
+     * @param string|array     $name è·¯ç”±å‘½åæ ‡è¯† æ•°ç»„è¡¨ç¤ºæ‰¹é‡è®¾ç½®
+     * @param array            $value è·¯ç”±åœ°å€åŠå˜é‡ä¿¡æ¯
      * @return array
      */
     public static function name($name = '', $value = null)
@@ -152,9 +152,9 @@ class Route
     }
 
     /**
-     * ¶ÁÈ¡Â·ÓÉ°ó¶¨
+     * è¯»å–è·¯ç”±ç»‘å®š
      * @access public
-     * @param string    $type °ó¶¨ÀàĞÍ
+     * @param string    $type ç»‘å®šç±»å‹
      * @return mixed
      */
     public static function getBind($type)
@@ -163,33 +163,33 @@ class Route
     }
 
     /**
-     * µ¼ÈëÅäÖÃÎÄ¼şµÄÂ·ÓÉ¹æÔò
+     * å¯¼å…¥é…ç½®æ–‡ä»¶çš„è·¯ç”±è§„åˆ™
      * @access public
-     * @param array     $rule Â·ÓÉ¹æÔò
-     * @param string    $type ÇëÇóÀàĞÍ
+     * @param array     $rule è·¯ç”±è§„åˆ™
+     * @param string    $type è¯·æ±‚ç±»å‹
      * @return void
      */
     public static function import(array $rule, $type = '*')
     {
-        // ¼ì²éÓòÃû²¿Êğ
+        // æ£€æŸ¥åŸŸåéƒ¨ç½²
         if (isset($rule['__domain__'])) {
             self::domain($rule['__domain__']);
             unset($rule['__domain__']);
         }
 
-        // ¼ì²é±äÁ¿¹æÔò
+        // æ£€æŸ¥å˜é‡è§„åˆ™
         if (isset($rule['__pattern__'])) {
             self::pattern($rule['__pattern__']);
             unset($rule['__pattern__']);
         }
 
-        // ¼ì²éÂ·ÓÉ±ğÃû
+        // æ£€æŸ¥è·¯ç”±åˆ«å
         if (isset($rule['__alias__'])) {
             self::alias($rule['__alias__']);
             unset($rule['__alias__']);
         }
 
-        // ¼ì²é×ÊÔ´Â·ÓÉ
+        // æ£€æŸ¥èµ„æºè·¯ç”±
         if (isset($rule['__rest__'])) {
             self::resource($rule['__rest__']);
             unset($rule['__rest__']);
@@ -198,7 +198,7 @@ class Route
         self::registerRules($rule, strtolower($type));
     }
 
-    // ÅúÁ¿×¢²áÂ·ÓÉ
+    // æ‰¹é‡æ³¨å†Œè·¯ç”±
     protected static function registerRules($rules, $type = '*')
     {
         foreach ($rules as $key => $val) {
@@ -220,13 +220,13 @@ class Route
     }
 
     /**
-     * ×¢²áÂ·ÓÉ¹æÔò
+     * æ³¨å†Œè·¯ç”±è§„åˆ™
      * @access public
-     * @param string|array  $rule Â·ÓÉ¹æÔò
-     * @param string        $route Â·ÓÉµØÖ·
-     * @param string        $type ÇëÇóÀàĞÍ
-     * @param array         $option Â·ÓÉ²ÎÊı
-     * @param array         $pattern ±äÁ¿¹æÔò
+     * @param string|array  $rule è·¯ç”±è§„åˆ™
+     * @param string        $route è·¯ç”±åœ°å€
+     * @param string        $type è¯·æ±‚ç±»å‹
+     * @param array         $option è·¯ç”±å‚æ•°
+     * @param array         $pattern å˜é‡è§„åˆ™
      * @return void
      */
     public static function rule($rule, $route = '', $type = '*', $option = [], $pattern = [])
@@ -234,7 +234,7 @@ class Route
         $group = self::getGroup('name');
 
         if (!is_null($group)) {
-            // Â·ÓÉ·Ö×é
+            // è·¯ç”±åˆ†ç»„
             $option  = array_merge(self::getGroup('option'), $option);
             $pattern = array_merge(self::getGroup('pattern'), $pattern);
         }
@@ -268,14 +268,14 @@ class Route
     }
 
     /**
-     * ÉèÖÃÂ·ÓÉ¹æÔò
+     * è®¾ç½®è·¯ç”±è§„åˆ™
      * @access public
-     * @param string|array  $rule Â·ÓÉ¹æÔò
-     * @param string        $route Â·ÓÉµØÖ·
-     * @param string        $type ÇëÇóÀàĞÍ
-     * @param array         $option Â·ÓÉ²ÎÊı
-     * @param array         $pattern ±äÁ¿¹æÔò
-     * @param string        $group ËùÊô·Ö×é
+     * @param string|array  $rule è·¯ç”±è§„åˆ™
+     * @param string        $route è·¯ç”±åœ°å€
+     * @param string        $type è¯·æ±‚ç±»å‹
+     * @param array         $option è·¯ç”±å‚æ•°
+     * @param array         $pattern å˜é‡è§„åˆ™
+     * @param string        $group æ‰€å±åˆ†ç»„
      * @return void
      */
     protected static function setRule($rule, $route, $type = '*', $option = [], $pattern = [], $group = '')
@@ -290,11 +290,11 @@ class Route
             if (Config::get('route_complete_match')) {
                 $option['complete_match'] = true;
             } elseif ('$' == substr($rule, -1, 1)) {
-                // ÊÇ·ñÍêÕûÆ¥Åä
+                // æ˜¯å¦å®Œæ•´åŒ¹é…
                 $option['complete_match'] = true;
             }
         } elseif (empty($option['complete_match']) && '$' == substr($rule, -1, 1)) {
-            // ÊÇ·ñÍêÕûÆ¥Åä
+            // æ˜¯å¦å®Œæ•´åŒ¹é…
             $option['complete_match'] = true;
         }
 
@@ -333,7 +333,7 @@ class Route
                 self::$rules[$type][$rule] = ['rule' => $rule, 'route' => $route, 'var' => $vars, 'option' => $option, 'pattern' => $pattern];
             }
             if ('*' == $type) {
-                // ×¢²áÂ·ÓÉ¿ì½İ·½Ê½
+                // æ³¨å†Œè·¯ç”±å¿«æ·æ–¹å¼
                 foreach (['get', 'post', 'put', 'delete', 'patch', 'head', 'options'] as $method) {
                     if (self::$domain && !isset(self::$rules['domain'][self::$domain][$method][$rule])) {
                         self::$rules['domain'][self::$domain][$method][$rule] = true;
@@ -346,9 +346,9 @@ class Route
     }
 
     /**
-     * ÉèÖÃµ±Ç°Ö´ĞĞµÄ²ÎÊıĞÅÏ¢
+     * è®¾ç½®å½“å‰æ‰§è¡Œçš„å‚æ•°ä¿¡æ¯
      * @access public
-     * @param array    $options ²ÎÊıĞÅÏ¢
+     * @param array    $options å‚æ•°ä¿¡æ¯
      * @return mixed
      */
     protected static function setOption($options = [])
@@ -357,7 +357,7 @@ class Route
     }
 
     /**
-     * »ñÈ¡µ±Ç°Ö´ĞĞµÄËùÓĞ²ÎÊıĞÅÏ¢
+     * è·å–å½“å‰æ‰§è¡Œçš„æ‰€æœ‰å‚æ•°ä¿¡æ¯
      * @access public
      * @return array
      */
@@ -367,9 +367,9 @@ class Route
     }
 
     /**
-     * »ñÈ¡µ±Ç°µÄ·Ö×éĞÅÏ¢
+     * è·å–å½“å‰çš„åˆ†ç»„ä¿¡æ¯
      * @access public
-     * @param string    $type ·Ö×éĞÅÏ¢Ãû³Æ name option pattern
+     * @param string    $type åˆ†ç»„ä¿¡æ¯åç§° name option pattern
      * @return mixed
      */
     public static function getGroup($type)
@@ -382,11 +382,11 @@ class Route
     }
 
     /**
-     * ÉèÖÃµ±Ç°µÄÂ·ÓÉ·Ö×é
+     * è®¾ç½®å½“å‰çš„è·¯ç”±åˆ†ç»„
      * @access public
-     * @param string    $name ·Ö×éÃû³Æ
-     * @param array     $option ·Ö×éÂ·ÓÉ²ÎÊı
-     * @param array     $pattern ·Ö×é±äÁ¿¹æÔò
+     * @param string    $name åˆ†ç»„åç§°
+     * @param array     $option åˆ†ç»„è·¯ç”±å‚æ•°
+     * @param array     $pattern åˆ†ç»„å˜é‡è§„åˆ™
      * @return void
      */
     public static function setGroup($name, $option = [], $pattern = [])
@@ -397,12 +397,12 @@ class Route
     }
 
     /**
-     * ×¢²áÂ·ÓÉ·Ö×é
+     * æ³¨å†Œè·¯ç”±åˆ†ç»„
      * @access public
-     * @param string|array      $name ·Ö×éÃû³Æ»òÕß²ÎÊı
-     * @param array|\Closure    $routes Â·ÓÉµØÖ·
-     * @param array             $option Â·ÓÉ²ÎÊı
-     * @param array             $pattern ±äÁ¿¹æÔò
+     * @param string|array      $name åˆ†ç»„åç§°æˆ–è€…å‚æ•°
+     * @param array|\Closure    $routes è·¯ç”±åœ°å€
+     * @param array             $option è·¯ç”±å‚æ•°
+     * @param array             $pattern å˜é‡è§„åˆ™
      * @return void
      */
     public static function group($name, $routes, $option = [], $pattern = [])
@@ -411,7 +411,7 @@ class Route
             $option = $name;
             $name   = isset($option['name']) ? $option['name'] : '';
         }
-        // ·Ö×é
+        // åˆ†ç»„
         $currentGroup = self::getGroup('name');
         if ($currentGroup) {
             $name = $currentGroup . ($name ? '/' . ltrim($name, '/') : '');
@@ -447,7 +447,7 @@ class Route
                     $options  = isset($option1) ? $option1 : $option;
                     $patterns = isset($pattern1) ? $pattern1 : $pattern;
                     if ('$' == substr($key, -1, 1)) {
-                        // ÊÇ·ñÍêÕûÆ¥Åä
+                        // æ˜¯å¦å®Œæ•´åŒ¹é…
                         $options['complete_match'] = true;
                         $key                       = substr($key, 0, -1);
                     } elseif ($completeMatch) {
@@ -456,7 +456,7 @@ class Route
                     $key    = trim($key, '/');
                     $vars   = self::parseVar($key);
                     $item[] = ['rule' => $key, 'route' => $route, 'var' => $vars, 'option' => $options, 'pattern' => $patterns];
-                    // ÉèÖÃÂ·ÓÉ±êÊ¶
+                    // è®¾ç½®è·¯ç”±æ ‡è¯†
                     $suffix = isset($options['ext']) ? $options['ext'] : null;
                     self::name($route, [$name . ($key ? '/' . $key : ''), $vars, self::$domain, $suffix]);
                 }
@@ -472,25 +472,25 @@ class Route
             }
 
         } elseif ($routes instanceof \Closure) {
-            // ±Õ°ü×¢²á
+            // é—­åŒ…æ³¨å†Œ
             $currentOption  = self::getGroup('option');
             $currentPattern = self::getGroup('pattern');
             self::setGroup('', array_merge($currentOption, $option), array_merge($currentPattern, $pattern));
             call_user_func_array($routes, []);
             self::setGroup($currentGroup, $currentOption, $currentPattern);
         } else {
-            // ÅúÁ¿×¢²áÂ·ÓÉ
+            // æ‰¹é‡æ³¨å†Œè·¯ç”±
             self::rule($routes, '', '*', $option, $pattern);
         }
     }
 
     /**
-     * ×¢²áÂ·ÓÉ
+     * æ³¨å†Œè·¯ç”±
      * @access public
-     * @param string|array  $rule Â·ÓÉ¹æÔò
-     * @param string        $route Â·ÓÉµØÖ·
-     * @param array         $option Â·ÓÉ²ÎÊı
-     * @param array         $pattern ±äÁ¿¹æÔò
+     * @param string|array  $rule è·¯ç”±è§„åˆ™
+     * @param string        $route è·¯ç”±åœ°å€
+     * @param array         $option è·¯ç”±å‚æ•°
+     * @param array         $pattern å˜é‡è§„åˆ™
      * @return void
      */
     public static function any($rule, $route = '', $option = [], $pattern = [])
@@ -499,12 +499,12 @@ class Route
     }
 
     /**
-     * ×¢²áGETÂ·ÓÉ
+     * æ³¨å†ŒGETè·¯ç”±
      * @access public
-     * @param string|array  $rule Â·ÓÉ¹æÔò
-     * @param string        $route Â·ÓÉµØÖ·
-     * @param array         $option Â·ÓÉ²ÎÊı
-     * @param array         $pattern ±äÁ¿¹æÔò
+     * @param string|array  $rule è·¯ç”±è§„åˆ™
+     * @param string        $route è·¯ç”±åœ°å€
+     * @param array         $option è·¯ç”±å‚æ•°
+     * @param array         $pattern å˜é‡è§„åˆ™
      * @return void
      */
     public static function get($rule, $route = '', $option = [], $pattern = [])
@@ -513,12 +513,12 @@ class Route
     }
 
     /**
-     * ×¢²áPOSTÂ·ÓÉ
+     * æ³¨å†ŒPOSTè·¯ç”±
      * @access public
-     * @param string|array  $rule Â·ÓÉ¹æÔò
-     * @param string        $route Â·ÓÉµØÖ·
-     * @param array         $option Â·ÓÉ²ÎÊı
-     * @param array         $pattern ±äÁ¿¹æÔò
+     * @param string|array  $rule è·¯ç”±è§„åˆ™
+     * @param string        $route è·¯ç”±åœ°å€
+     * @param array         $option è·¯ç”±å‚æ•°
+     * @param array         $pattern å˜é‡è§„åˆ™
      * @return void
      */
     public static function post($rule, $route = '', $option = [], $pattern = [])
@@ -527,12 +527,12 @@ class Route
     }
 
     /**
-     * ×¢²áPUTÂ·ÓÉ
+     * æ³¨å†ŒPUTè·¯ç”±
      * @access public
-     * @param string|array  $rule Â·ÓÉ¹æÔò
-     * @param string        $route Â·ÓÉµØÖ·
-     * @param array         $option Â·ÓÉ²ÎÊı
-     * @param array         $pattern ±äÁ¿¹æÔò
+     * @param string|array  $rule è·¯ç”±è§„åˆ™
+     * @param string        $route è·¯ç”±åœ°å€
+     * @param array         $option è·¯ç”±å‚æ•°
+     * @param array         $pattern å˜é‡è§„åˆ™
      * @return void
      */
     public static function put($rule, $route = '', $option = [], $pattern = [])
@@ -541,12 +541,12 @@ class Route
     }
 
     /**
-     * ×¢²áDELETEÂ·ÓÉ
+     * æ³¨å†ŒDELETEè·¯ç”±
      * @access public
-     * @param string|array  $rule Â·ÓÉ¹æÔò
-     * @param string        $route Â·ÓÉµØÖ·
-     * @param array         $option Â·ÓÉ²ÎÊı
-     * @param array         $pattern ±äÁ¿¹æÔò
+     * @param string|array  $rule è·¯ç”±è§„åˆ™
+     * @param string        $route è·¯ç”±åœ°å€
+     * @param array         $option è·¯ç”±å‚æ•°
+     * @param array         $pattern å˜é‡è§„åˆ™
      * @return void
      */
     public static function delete($rule, $route = '', $option = [], $pattern = [])
@@ -555,12 +555,12 @@ class Route
     }
 
     /**
-     * ×¢²áPATCHÂ·ÓÉ
+     * æ³¨å†ŒPATCHè·¯ç”±
      * @access public
-     * @param string|array  $rule Â·ÓÉ¹æÔò
-     * @param string        $route Â·ÓÉµØÖ·
-     * @param array         $option Â·ÓÉ²ÎÊı
-     * @param array         $pattern ±äÁ¿¹æÔò
+     * @param string|array  $rule è·¯ç”±è§„åˆ™
+     * @param string        $route è·¯ç”±åœ°å€
+     * @param array         $option è·¯ç”±å‚æ•°
+     * @param array         $pattern å˜é‡è§„åˆ™
      * @return void
      */
     public static function patch($rule, $route = '', $option = [], $pattern = [])
@@ -569,12 +569,12 @@ class Route
     }
 
     /**
-     * ×¢²á×ÊÔ´Â·ÓÉ
+     * æ³¨å†Œèµ„æºè·¯ç”±
      * @access public
-     * @param string|array  $rule Â·ÓÉ¹æÔò
-     * @param string        $route Â·ÓÉµØÖ·
-     * @param array         $option Â·ÓÉ²ÎÊı
-     * @param array         $pattern ±äÁ¿¹æÔò
+     * @param string|array  $rule è·¯ç”±è§„åˆ™
+     * @param string        $route è·¯ç”±åœ°å€
+     * @param array         $option è·¯ç”±å‚æ•°
+     * @param array         $pattern å˜é‡è§„åˆ™
      * @return void
      */
     public static function resource($rule, $route = '', $option = [], $pattern = [])
@@ -588,7 +588,7 @@ class Route
             }
         } else {
             if (strpos($rule, '.')) {
-                // ×¢²áÇ¶Ì××ÊÔ´Â·ÓÉ
+                // æ³¨å†ŒåµŒå¥—èµ„æºè·¯ç”±
                 $array = explode('.', $rule);
                 $last  = array_pop($array);
                 $item  = [];
@@ -597,7 +597,7 @@ class Route
                 }
                 $rule = implode('/', $item) . '/' . $last;
             }
-            // ×¢²á×ÊÔ´Â·ÓÉ
+            // æ³¨å†Œèµ„æºè·¯ç”±
             foreach (self::$rest as $key => $val) {
                 if ((isset($option['only']) && !in_array($key, $option['only']))
                     || (isset($option['except']) && in_array($key, $option['except']))) {
@@ -616,12 +616,12 @@ class Route
     }
 
     /**
-     * ×¢²á¿ØÖÆÆ÷Â·ÓÉ ²Ù×÷·½·¨¶ÔÓ¦²»Í¬µÄÇëÇóºó×º
+     * æ³¨å†Œæ§åˆ¶å™¨è·¯ç”± æ“ä½œæ–¹æ³•å¯¹åº”ä¸åŒçš„è¯·æ±‚åç¼€
      * @access public
-     * @param string    $rule Â·ÓÉ¹æÔò
-     * @param string    $route Â·ÓÉµØÖ·
-     * @param array     $option Â·ÓÉ²ÎÊı
-     * @param array     $pattern ±äÁ¿¹æÔò
+     * @param string    $rule è·¯ç”±è§„åˆ™
+     * @param string    $route è·¯ç”±åœ°å€
+     * @param array     $option è·¯ç”±å‚æ•°
+     * @param array     $pattern å˜é‡è§„åˆ™
      * @return void
      */
     public static function controller($rule, $route = '', $option = [], $pattern = [])
@@ -632,11 +632,11 @@ class Route
     }
 
     /**
-     * ×¢²á±ğÃûÂ·ÓÉ
+     * æ³¨å†Œåˆ«åè·¯ç”±
      * @access public
-     * @param string|array  $rule Â·ÓÉ±ğÃû
-     * @param string        $route Â·ÓÉµØÖ·
-     * @param array         $option Â·ÓÉ²ÎÊı
+     * @param string|array  $rule è·¯ç”±åˆ«å
+     * @param string        $route è·¯ç”±åœ°å€
+     * @param array         $option è·¯ç”±å‚æ•°
      * @return void
      */
     public static function alias($rule = null, $route = '', $option = [])
@@ -649,10 +649,10 @@ class Route
     }
 
     /**
-     * ÉèÖÃ²»Í¬ÇëÇóÀàĞÍÏÂÃæµÄ·½·¨Ç°×º
+     * è®¾ç½®ä¸åŒè¯·æ±‚ç±»å‹ä¸‹é¢çš„æ–¹æ³•å‰ç¼€
      * @access public
-     * @param string    $method ÇëÇóÀàĞÍ
-     * @param string    $prefix ÀàĞÍÇ°×º
+     * @param string    $method è¯·æ±‚ç±»å‹
+     * @param string    $prefix ç±»å‹å‰ç¼€
      * @return void
      */
     public static function setMethodPrefix($method, $prefix = '')
@@ -665,10 +665,10 @@ class Route
     }
 
     /**
-     * rest·½·¨¶¨ÒåºÍĞŞ¸Ä
+     * restæ–¹æ³•å®šä¹‰å’Œä¿®æ”¹
      * @access public
-     * @param string|array  $name ·½·¨Ãû³Æ
-     * @param array|bool    $resource ×ÊÔ´
+     * @param string|array  $name æ–¹æ³•åç§°
+     * @param array|bool    $resource èµ„æº
      * @return void
      */
     public static function rest($name, $resource = [])
@@ -681,11 +681,11 @@ class Route
     }
 
     /**
-     * ×¢²áÎ´Æ¥ÅäÂ·ÓÉ¹æÔòºóµÄ´¦Àí
+     * æ³¨å†ŒæœªåŒ¹é…è·¯ç”±è§„åˆ™åçš„å¤„ç†
      * @access public
-     * @param string    $route Â·ÓÉµØÖ·
-     * @param string    $method ÇëÇóÀàĞÍ
-     * @param array     $option Â·ÓÉ²ÎÊı
+     * @param string    $route è·¯ç”±åœ°å€
+     * @param string    $method è¯·æ±‚ç±»å‹
+     * @param array     $option è·¯ç”±å‚æ•°
      * @return void
      */
     public static function miss($route, $method = '*', $option = [])
@@ -694,9 +694,9 @@ class Route
     }
 
     /**
-     * ×¢²áÒ»¸ö×Ô¶¯½âÎöµÄURLÂ·ÓÉ
+     * æ³¨å†Œä¸€ä¸ªè‡ªåŠ¨è§£æçš„URLè·¯ç”±
      * @access public
-     * @param string    $route Â·ÓÉµØÖ·
+     * @param string    $route è·¯ç”±åœ°å€
      * @return void
      */
     public static function auto($route)
@@ -705,9 +705,9 @@ class Route
     }
 
     /**
-     * »ñÈ¡»òÕßÅúÁ¿ÉèÖÃÂ·ÓÉ¶¨Òå
+     * è·å–æˆ–è€…æ‰¹é‡è®¾ç½®è·¯ç”±å®šä¹‰
      * @access public
-     * @param mixed $rules ÇëÇóÀàĞÍ»òÕßÂ·ÓÉ¶¨ÒåÊı×é
+     * @param mixed $rules è¯·æ±‚ç±»å‹æˆ–è€…è·¯ç”±å®šä¹‰æ•°ç»„
      * @return array
      */
     public static function rules($rules = '')
@@ -724,50 +724,50 @@ class Route
     }
 
     /**
-     * ¼ì²â×ÓÓòÃû²¿Êğ
+     * æ£€æµ‹å­åŸŸåéƒ¨ç½²
      * @access public
-     * @param Request   $request RequestÇëÇó¶ÔÏó
-     * @param array     $currentRules µ±Ç°Â·ÓÉ¹æÔò
-     * @param string    $method ÇëÇóÀàĞÍ
+     * @param Request   $request Requestè¯·æ±‚å¯¹è±¡
+     * @param array     $currentRules å½“å‰è·¯ç”±è§„åˆ™
+     * @param string    $method è¯·æ±‚ç±»å‹
      * @return void
      */
     public static function checkDomain($request, &$currentRules, $method = 'get')
     {
-        // ÓòÃû¹æÔò
+        // åŸŸåè§„åˆ™
         $rules = self::$rules['domain'];
-        // ¿ªÆô×ÓÓòÃû²¿Êğ Ö§³Ö¶ş¼¶ºÍÈı¼¶ÓòÃû
+        // å¼€å¯å­åŸŸåéƒ¨ç½² æ”¯æŒäºŒçº§å’Œä¸‰çº§åŸŸå
         if (!empty($rules)) {
             $host = $request->host(true);
             if (isset($rules[$host])) {
-                // ÍêÕûÓòÃû»òÕßIPÅäÖÃ
+                // å®Œæ•´åŸŸåæˆ–è€…IPé…ç½®
                 $item = $rules[$host];
             } else {
                 $rootDomain = Config::get('url_domain_root');
                 if ($rootDomain) {
-                    // ÅäÖÃÓòÃû¸ù ÀıÈç thinkphp.cn 163.com.cn Èç¹ûÊÇ¹ú¼Ò¼¶ÓòÃû com.cn net.cn Ö®ÀàµÄÓòÃûĞèÒªÅäÖÃ
+                    // é…ç½®åŸŸåæ ¹ ä¾‹å¦‚ thinkphp.cn 163.com.cn å¦‚æœæ˜¯å›½å®¶çº§åŸŸå com.cn net.cn ä¹‹ç±»çš„åŸŸåéœ€è¦é…ç½®
                     $domain = explode('.', rtrim(stristr($host, $rootDomain, true), '.'));
                 } else {
                     $domain = explode('.', $host, -2);
                 }
-                // ×ÓÓòÃûÅäÖÃ
+                // å­åŸŸåé…ç½®
                 if (!empty($domain)) {
-                    // µ±Ç°×ÓÓòÃû
+                    // å½“å‰å­åŸŸå
                     $subDomain       = implode('.', $domain);
                     self::$subDomain = $subDomain;
                     $domain2         = array_pop($domain);
                     if ($domain) {
-                        // ´æÔÚÈı¼¶ÓòÃû
+                        // å­˜åœ¨ä¸‰çº§åŸŸå
                         $domain3 = array_pop($domain);
                     }
                     if ($subDomain && isset($rules[$subDomain])) {
-                        // ×ÓÓòÃûÅäÖÃ
+                        // å­åŸŸåé…ç½®
                         $item = $rules[$subDomain];
                     } elseif (isset($rules['*.' . $domain2]) && !empty($domain3)) {
-                        // ·ºÈı¼¶ÓòÃû
+                        // æ³›ä¸‰çº§åŸŸå
                         $item      = $rules['*.' . $domain2];
                         $panDomain = $domain3;
                     } elseif (isset($rules['*']) && !empty($domain2)) {
-                        // ·º¶ş¼¶ÓòÃû
+                        // æ³›äºŒçº§åŸŸå
                         if ('www' != $domain2) {
                             $item      = $rules['*'];
                             $panDomain = $domain2;
@@ -777,26 +777,26 @@ class Route
             }
             if (!empty($item)) {
                 if (isset($panDomain)) {
-                    // ±£´æµ±Ç°·ºÓòÃû
+                    // ä¿å­˜å½“å‰æ³›åŸŸå
                     $request->route(['__domain__' => $panDomain]);
                 }
                 if (isset($item['[bind]'])) {
-                    // ½âÎö×ÓÓòÃû²¿Êğ¹æÔò
+                    // è§£æå­åŸŸåéƒ¨ç½²è§„åˆ™
                     list($rule, $option, $pattern) = $item['[bind]'];
                     if (!empty($option['https']) && !$request->isSsl()) {
-                        // https¼ì²â
+                        // httpsæ£€æµ‹
                         throw new HttpException(404, 'must use https request:' . $host);
                     }
 
                     if (strpos($rule, '?')) {
-                        // ´«ÈëÆäËü²ÎÊı
+                        // ä¼ å…¥å…¶å®ƒå‚æ•°
                         $array  = parse_url($rule);
                         $result = $array['path'];
                         parse_str($array['query'], $params);
                         if (isset($panDomain)) {
                             $pos = array_search('*', $params);
                             if (false !== $pos) {
-                                // ·ºÓòÃû×÷Îª²ÎÊı
+                                // æ³›åŸŸåä½œä¸ºå‚æ•°
                                 $params[$pos] = $panDomain;
                             }
                         }
@@ -806,13 +806,13 @@ class Route
                     }
 
                     if (0 === strpos($result, '\\')) {
-                        // °ó¶¨µ½ÃüÃû¿Õ¼ä ÀıÈç \app\index\behavior
+                        // ç»‘å®šåˆ°å‘½åç©ºé—´ ä¾‹å¦‚ \app\index\behavior
                         self::$bind = ['type' => 'namespace', 'namespace' => $result];
                     } elseif (0 === strpos($result, '@')) {
-                        // °ó¶¨µ½Àà ÀıÈç @app\index\controller\User
+                        // ç»‘å®šåˆ°ç±» ä¾‹å¦‚ @app\index\controller\User
                         self::$bind = ['type' => 'class', 'class' => substr($result, 1)];
                     } else {
-                        // °ó¶¨µ½Ä£¿é/¿ØÖÆÆ÷ ÀıÈç index/user
+                        // ç»‘å®šåˆ°æ¨¡å—/æ§åˆ¶å™¨ ä¾‹å¦‚ index/user
                         self::$bind = ['type' => 'module', 'module' => $result];
                     }
                     self::$domainBind = true;
@@ -825,34 +825,34 @@ class Route
     }
 
     /**
-     * ¼ì²âURLÂ·ÓÉ
+     * æ£€æµ‹URLè·¯ç”±
      * @access public
-     * @param Request   $request RequestÇëÇó¶ÔÏó
-     * @param string    $url URLµØÖ·
-     * @param string    $depr URL·Ö¸ô·û
-     * @param bool      $checkDomain ÊÇ·ñ¼ì²âÓòÃû¹æÔò
+     * @param Request   $request Requestè¯·æ±‚å¯¹è±¡
+     * @param string    $url URLåœ°å€
+     * @param string    $depr URLåˆ†éš”ç¬¦
+     * @param bool      $checkDomain æ˜¯å¦æ£€æµ‹åŸŸåè§„åˆ™
      * @return false|array
      */
     public static function check($request, $url, $depr = '/', $checkDomain = false)
     {
-        // ·Ö¸ô·ûÌæ»» È·±£Â·ÓÉ¶¨ÒåÊ¹ÓÃÍ³Ò»µÄ·Ö¸ô·û
+        // åˆ†éš”ç¬¦æ›¿æ¢ ç¡®ä¿è·¯ç”±å®šä¹‰ä½¿ç”¨ç»Ÿä¸€çš„åˆ†éš”ç¬¦
         $url = str_replace($depr, '|', $url);
 
         if (isset(self::$rules['alias'][$url]) || isset(self::$rules['alias'][strstr($url, '|', true)])) {
-            // ¼ì²âÂ·ÓÉ±ğÃû
+            // æ£€æµ‹è·¯ç”±åˆ«å
             $result = self::checkRouteAlias($request, $url, $depr);
             if (false !== $result) {
                 return $result;
             }
         }
         $method = strtolower($request->method());
-        // »ñÈ¡µ±Ç°ÇëÇóÀàĞÍµÄÂ·ÓÉ¹æÔò
+        // è·å–å½“å‰è¯·æ±‚ç±»å‹çš„è·¯ç”±è§„åˆ™
         $rules = isset(self::$rules[$method]) ? self::$rules[$method] : [];
-        // ¼ì²âÓòÃû²¿Êğ
+        // æ£€æµ‹åŸŸåéƒ¨ç½²
         if ($checkDomain) {
             self::checkDomain($request, $rules, $method);
         }
-        // ¼ì²âURL°ó¶¨
+        // æ£€æµ‹URLç»‘å®š
         $return = self::checkUrlBind($url, $rules, $depr);
         if (false !== $return) {
             return $return;
@@ -862,7 +862,7 @@ class Route
         }
         $item = str_replace('|', '/', $url);
         if (isset($rules[$item])) {
-            // ¾²Ì¬Â·ÓÉ¹æÔò¼ì²â
+            // é™æ€è·¯ç”±è§„åˆ™æ£€æµ‹
             $rule = $rules[$item];
             if (true === $rule) {
                 $rule = self::getRouteExpress($item);
@@ -873,7 +873,7 @@ class Route
             }
         }
 
-        // Â·ÓÉ¹æÔò¼ì²â
+        // è·¯ç”±è§„åˆ™æ£€æµ‹
         if (!empty($rules)) {
             return self::checkRoute($request, $rules, $url, $depr);
         }
@@ -886,14 +886,14 @@ class Route
     }
 
     /**
-     * ¼ì²âÂ·ÓÉ¹æÔò
+     * æ£€æµ‹è·¯ç”±è§„åˆ™
      * @access private
      * @param Request   $request
-     * @param array     $rules Â·ÓÉ¹æÔò
-     * @param string    $url URLµØÖ·
-     * @param string    $depr URL·Ö¸î·û
-     * @param string    $group Â·ÓÉ·Ö×éÃû
-     * @param array     $options Â·ÓÉ²ÎÊı£¨·Ö×é£©
+     * @param array     $rules è·¯ç”±è§„åˆ™
+     * @param string    $url URLåœ°å€
+     * @param string    $depr URLåˆ†å‰²ç¬¦
+     * @param string    $group è·¯ç”±åˆ†ç»„å
+     * @param array     $options è·¯ç”±å‚æ•°ï¼ˆåˆ†ç»„ï¼‰
      * @return mixed
      */
     private static function checkRoute($request, $rules, $url, $depr = '/', $group = '', $options = [])
@@ -911,18 +911,18 @@ class Route
             $option  = $item['option'];
             $pattern = $item['pattern'];
 
-            // ¼ì²é²ÎÊıÓĞĞ§ĞÔ
+            // æ£€æŸ¥å‚æ•°æœ‰æ•ˆæ€§
             if (!self::checkOption($option, $request)) {
                 continue;
             }
 
             if (isset($option['ext'])) {
-                // Â·ÓÉext²ÎÊı ÓÅÏÈÓÚÏµÍ³ÅäÖÃµÄURLÎ±¾²Ì¬ºó×º²ÎÊı
+                // è·¯ç”±extå‚æ•° ä¼˜å…ˆäºç³»ç»Ÿé…ç½®çš„URLä¼ªé™æ€åç¼€å‚æ•°
                 $url = preg_replace('/\.' . $request->ext() . '$/i', '', $url);
             }
 
             if (is_array($rule)) {
-                // ·Ö×éÂ·ÓÉ
+                // åˆ†ç»„è·¯ç”±
                 $pos = strpos(str_replace('<', ':', $key), ':');
                 if (false !== $pos) {
                     $str = substr($key, 0, $pos);
@@ -939,7 +939,7 @@ class Route
                 }
             } elseif ($route) {
                 if ('__miss__' == $rule || '__auto__' == $rule) {
-                    // Ö¸¶¨ÌØÊâÂ·ÓÉ
+                    // æŒ‡å®šç‰¹æ®Šè·¯ç”±
                     $var    = trim($rule, '__');
                     ${$var} = $item;
                     continue;
@@ -959,21 +959,21 @@ class Route
             }
         }
         if (isset($auto)) {
-            // ×Ô¶¯½âÎöURLµØÖ·
+            // è‡ªåŠ¨è§£æURLåœ°å€
             return self::parseUrl($auto['route'] . '/' . $url, $depr);
         } elseif (isset($miss)) {
-            // Î´Æ¥ÅäËùÓĞÂ·ÓÉµÄÂ·ÓÉ¹æÔò´¦Àí
+            // æœªåŒ¹é…æ‰€æœ‰è·¯ç”±çš„è·¯ç”±è§„åˆ™å¤„ç†
             return self::parseRule('', $miss['route'], $url, $miss['option']);
         }
         return false;
     }
 
     /**
-     * ¼ì²âÂ·ÓÉ±ğÃû
+     * æ£€æµ‹è·¯ç”±åˆ«å
      * @access private
      * @param Request   $request
-     * @param string    $url URLµØÖ·
-     * @param string    $depr URL·Ö¸ô·û
+     * @param string    $url URLåœ°å€
+     * @param string    $depr URLåˆ†éš”ç¬¦
      * @return mixed
      */
     private static function checkRouteAlias($request, $url, $depr)
@@ -986,10 +986,10 @@ class Route
             list($rule, $option) = $item;
             $action              = $array[0];
             if (isset($option['allow']) && !in_array($action, explode(',', $option['allow']))) {
-                // ÔÊĞí²Ù×÷
+                // å…è®¸æ“ä½œ
                 return false;
             } elseif (isset($option['except']) && in_array($action, explode(',', $option['except']))) {
-                // ÅÅ³ı²Ù×÷
+                // æ’é™¤æ“ä½œ
                 return false;
             }
             if (isset($option['method'][$action])) {
@@ -999,28 +999,28 @@ class Route
             $rule = $item;
         }
         $bind = implode('|', $array);
-        // ²ÎÊıÓĞĞ§ĞÔ¼ì²é
+        // å‚æ•°æœ‰æ•ˆæ€§æ£€æŸ¥
         if (isset($option) && !self::checkOption($option, $request)) {
-            // Â·ÓÉ²»Æ¥Åä
+            // è·¯ç”±ä¸åŒ¹é…
             return false;
         } elseif (0 === strpos($rule, '\\')) {
-            // Â·ÓÉµ½Àà
+            // è·¯ç”±åˆ°ç±»
             return self::bindToClass($bind, substr($rule, 1), $depr);
         } elseif (0 === strpos($rule, '@')) {
-            // Â·ÓÉµ½¿ØÖÆÆ÷Àà
+            // è·¯ç”±åˆ°æ§åˆ¶å™¨ç±»
             return self::bindToController($bind, substr($rule, 1), $depr);
         } else {
-            // Â·ÓÉµ½Ä£¿é/¿ØÖÆÆ÷
+            // è·¯ç”±åˆ°æ¨¡å—/æ§åˆ¶å™¨
             return self::bindToModule($bind, $rule, $depr);
         }
     }
 
     /**
-     * ¼ì²âURL°ó¶¨
+     * æ£€æµ‹URLç»‘å®š
      * @access private
-     * @param string    $url URLµØÖ·
-     * @param array     $rules Â·ÓÉ¹æÔò
-     * @param string    $depr URL·Ö¸ô·û
+     * @param string    $url URLåœ°å€
+     * @param array     $rules è·¯ç”±è§„åˆ™
+     * @param string    $depr URLåˆ†éš”ç¬¦
      * @return mixed
      */
     private static function checkUrlBind(&$url, &$rules, $depr = '/')
@@ -1028,18 +1028,18 @@ class Route
         if (!empty(self::$bind)) {
             $type = self::$bind['type'];
             $bind = self::$bind[$type];
-            // ¼ÇÂ¼°ó¶¨ĞÅÏ¢
+            // è®°å½•ç»‘å®šä¿¡æ¯
             App::$debug && Log::record('[ BIND ] ' . var_export($bind, true), 'info');
-            // Èç¹ûÓĞURL°ó¶¨ Ôò½øĞĞ°ó¶¨¼ì²â
+            // å¦‚æœæœ‰URLç»‘å®š åˆ™è¿›è¡Œç»‘å®šæ£€æµ‹
             switch ($type) {
                 case 'class':
-                    // °ó¶¨µ½Àà
+                    // ç»‘å®šåˆ°ç±»
                     return self::bindToClass($url, $bind, $depr);
                 case 'controller':
-                    // °ó¶¨µ½¿ØÖÆÆ÷Àà
+                    // ç»‘å®šåˆ°æ§åˆ¶å™¨ç±»
                     return self::bindToController($url, $bind, $depr);
                 case 'namespace':
-                    // °ó¶¨µ½ÃüÃû¿Õ¼ä
+                    // ç»‘å®šåˆ°å‘½åç©ºé—´
                     return self::bindToNamespace($url, $bind, $depr);
             }
         }
@@ -1047,11 +1047,11 @@ class Route
     }
 
     /**
-     * °ó¶¨µ½Àà
+     * ç»‘å®šåˆ°ç±»
      * @access public
-     * @param string    $url URLµØÖ·
-     * @param string    $class ÀàÃû£¨´øÃüÃû¿Õ¼ä£©
-     * @param string    $depr URL·Ö¸ô·û
+     * @param string    $url URLåœ°å€
+     * @param string    $class ç±»åï¼ˆå¸¦å‘½åç©ºé—´ï¼‰
+     * @param string    $depr URLåˆ†éš”ç¬¦
      * @return array
      */
     public static function bindToClass($url, $class, $depr = '/')
@@ -1066,11 +1066,11 @@ class Route
     }
 
     /**
-     * °ó¶¨µ½ÃüÃû¿Õ¼ä
+     * ç»‘å®šåˆ°å‘½åç©ºé—´
      * @access public
-     * @param string    $url URLµØÖ·
-     * @param string    $namespace ÃüÃû¿Õ¼ä
-     * @param string    $depr URL·Ö¸ô·û
+     * @param string    $url URLåœ°å€
+     * @param string    $namespace å‘½åç©ºé—´
+     * @param string    $depr URLåˆ†éš”ç¬¦
      * @return array
      */
     public static function bindToNamespace($url, $namespace, $depr = '/')
@@ -1086,11 +1086,11 @@ class Route
     }
 
     /**
-     * °ó¶¨µ½¿ØÖÆÆ÷Àà
+     * ç»‘å®šåˆ°æ§åˆ¶å™¨ç±»
      * @access public
-     * @param string    $url URLµØÖ·
-     * @param string    $controller ¿ØÖÆÆ÷Ãû £¨Ö§³Ö´øÄ£¿éÃû index/user £©
-     * @param string    $depr URL·Ö¸ô·û
+     * @param string    $url URLåœ°å€
+     * @param string    $controller æ§åˆ¶å™¨å ï¼ˆæ”¯æŒå¸¦æ¨¡å—å index/user ï¼‰
+     * @param string    $depr URLåˆ†éš”ç¬¦
      * @return array
      */
     public static function bindToController($url, $controller, $depr = '/')
@@ -1105,11 +1105,11 @@ class Route
     }
 
     /**
-     * °ó¶¨µ½Ä£¿é/¿ØÖÆÆ÷
+     * ç»‘å®šåˆ°æ¨¡å—/æ§åˆ¶å™¨
      * @access public
-     * @param string    $url URLµØÖ·
-     * @param string    $controller ¿ØÖÆÆ÷ÀàÃû£¨´øÃüÃû¿Õ¼ä£©
-     * @param string    $depr URL·Ö¸ô·û
+     * @param string    $url URLåœ°å€
+     * @param string    $controller æ§åˆ¶å™¨ç±»åï¼ˆå¸¦å‘½åç©ºé—´ï¼‰
+     * @param string    $depr URLåˆ†éš”ç¬¦
      * @return array
      */
     public static function bindToModule($url, $controller, $depr = '/')
@@ -1124,26 +1124,26 @@ class Route
     }
 
     /**
-     * Â·ÓÉ²ÎÊıÓĞĞ§ĞÔ¼ì²é
+     * è·¯ç”±å‚æ•°æœ‰æ•ˆæ€§æ£€æŸ¥
      * @access private
-     * @param array     $option Â·ÓÉ²ÎÊı
-     * @param Request   $request Request¶ÔÏó
+     * @param array     $option è·¯ç”±å‚æ•°
+     * @param Request   $request Requestå¯¹è±¡
      * @return bool
      */
     private static function checkOption($option, $request)
     {
         if ((isset($option['method']) && is_string($option['method']) && false === stripos($option['method'], $request->method()))
-            || (isset($option['ajax']) && $option['ajax'] && !$request->isAjax()) // Ajax¼ì²â
-             || (isset($option['ajax']) && !$option['ajax'] && $request->isAjax()) // ·ÇAjax¼ì²â
-             || (isset($option['pjax']) && $option['pjax'] && !$request->isPjax()) // Pjax¼ì²â
-             || (isset($option['pjax']) && !$option['pjax'] && $request->isPjax()) // ·ÇPjax¼ì²â
-             || (isset($option['ext']) && false === stripos('|' . $option['ext'] . '|', '|' . $request->ext() . '|')) // Î±¾²Ì¬ºó×º¼ì²â
+            || (isset($option['ajax']) && $option['ajax'] && !$request->isAjax()) // Ajaxæ£€æµ‹
+             || (isset($option['ajax']) && !$option['ajax'] && $request->isAjax()) // éAjaxæ£€æµ‹
+             || (isset($option['pjax']) && $option['pjax'] && !$request->isPjax()) // Pjaxæ£€æµ‹
+             || (isset($option['pjax']) && !$option['pjax'] && $request->isPjax()) // éPjaxæ£€æµ‹
+             || (isset($option['ext']) && false === stripos('|' . $option['ext'] . '|', '|' . $request->ext() . '|')) // ä¼ªé™æ€åç¼€æ£€æµ‹
              || (isset($option['deny_ext']) && false !== stripos('|' . $option['deny_ext'] . '|', '|' . $request->ext() . '|'))
-            || (isset($option['domain']) && !in_array($option['domain'], [$_SERVER['HTTP_HOST'], self::$subDomain])) // ÓòÃû¼ì²â
-             || (isset($option['https']) && $option['https'] && !$request->isSsl()) // https¼ì²â
-             || (isset($option['https']) && !$option['https'] && $request->isSsl()) // https¼ì²â
-             || (!empty($option['before_behavior']) && false === Hook::exec($option['before_behavior'])) // ĞĞÎª¼ì²â
-             || (!empty($option['callback']) && is_callable($option['callback']) && false === call_user_func($option['callback'])) // ×Ô¶¨Òå¼ì²â
+            || (isset($option['domain']) && !in_array($option['domain'], [$_SERVER['HTTP_HOST'], self::$subDomain])) // åŸŸåæ£€æµ‹
+             || (isset($option['https']) && $option['https'] && !$request->isSsl()) // httpsæ£€æµ‹
+             || (isset($option['https']) && !$option['https'] && $request->isSsl()) // httpsæ£€æµ‹
+             || (!empty($option['before_behavior']) && false === Hook::exec($option['before_behavior'])) // è¡Œä¸ºæ£€æµ‹
+             || (!empty($option['callback']) && is_callable($option['callback']) && false === call_user_func($option['callback'])) // è‡ªå®šä¹‰æ£€æµ‹
         ) {
             return false;
         }
@@ -1151,30 +1151,30 @@ class Route
     }
 
     /**
-     * ¼ì²âÂ·ÓÉ¹æÔò
+     * æ£€æµ‹è·¯ç”±è§„åˆ™
      * @access private
-     * @param string    $rule Â·ÓÉ¹æÔò
-     * @param string    $route Â·ÓÉµØÖ·
-     * @param string    $url URLµØÖ·
-     * @param array     $pattern ±äÁ¿¹æÔò
-     * @param array     $option Â·ÓÉ²ÎÊı
-     * @param string    $depr URL·Ö¸ô·û£¨È«¾Ö£©
+     * @param string    $rule è·¯ç”±è§„åˆ™
+     * @param string    $route è·¯ç”±åœ°å€
+     * @param string    $url URLåœ°å€
+     * @param array     $pattern å˜é‡è§„åˆ™
+     * @param array     $option è·¯ç”±å‚æ•°
+     * @param string    $depr URLåˆ†éš”ç¬¦ï¼ˆå…¨å±€ï¼‰
      * @return array|false
      */
     private static function checkRule($rule, $route, $url, $pattern, $option, $depr)
     {
-        // ¼ì²éÍêÕû¹æÔò¶¨Òå
+        // æ£€æŸ¥å®Œæ•´è§„åˆ™å®šä¹‰
         if (isset($pattern['__url__']) && !preg_match(0 === strpos($pattern['__url__'], '/') ? $pattern['__url__'] : '/^' . $pattern['__url__'] . '/', str_replace('|', $depr, $url))) {
             return false;
         }
-        // ¼ì²éÂ·ÓÉµÄ²ÎÊı·Ö¸ô·û
+        // æ£€æŸ¥è·¯ç”±çš„å‚æ•°åˆ†éš”ç¬¦
         if (isset($option['param_depr'])) {
             $url = str_replace(['|', $option['param_depr']], [$depr, '|'], $url);
         }
 
         $len1 = substr_count($url, '|');
         $len2 = substr_count($rule, '/');
-        // ¶àÓà²ÎÊıÊÇ·ñºÏ²¢
+        // å¤šä½™å‚æ•°æ˜¯å¦åˆå¹¶
         $merge = !empty($option['merge_extra_vars']);
         if ($merge && $len1 > $len2) {
             $url = str_replace('|', $depr, $url);
@@ -1183,14 +1183,14 @@ class Route
 
         if ($len1 >= $len2 || strpos($rule, '[')) {
             if (!empty($option['complete_match'])) {
-                // ÍêÕûÆ¥Åä
+                // å®Œæ•´åŒ¹é…
                 if (!$merge && $len1 != $len2 && (false === strpos($rule, '[') || $len1 > $len2 || $len1 < $len2 - substr_count($rule, '['))) {
                     return false;
                 }
             }
             $pattern = array_merge(self::$rules['pattern'], $pattern);
             if (false !== $match = self::match($url, $rule, $pattern)) {
-                // Æ¥Åäµ½Â·ÓÉ¹æÔò
+                // åŒ¹é…åˆ°è·¯ç”±è§„åˆ™
                 return self::parseRule($rule, $route, $url, $option, $match);
             }
         }
@@ -1198,11 +1198,11 @@ class Route
     }
 
     /**
-     * ½âÎöÄ£¿éµÄURLµØÖ· [Ä£¿é/¿ØÖÆÆ÷/²Ù×÷?]²ÎÊı1=Öµ1&²ÎÊı2=Öµ2...
+     * è§£ææ¨¡å—çš„URLåœ°å€ [æ¨¡å—/æ§åˆ¶å™¨/æ“ä½œ?]å‚æ•°1=å€¼1&å‚æ•°2=å€¼2...
      * @access public
-     * @param string    $url URLµØÖ·
-     * @param string    $depr URL·Ö¸ô·û
-     * @param bool      $autoSearch ÊÇ·ñ×Ô¶¯Éî¶ÈËÑË÷¿ØÖÆÆ÷
+     * @param string    $url URLåœ°å€
+     * @param string    $depr URLåˆ†éš”ç¬¦
+     * @param bool      $autoSearch æ˜¯å¦è‡ªåŠ¨æ·±åº¦æœç´¢æ§åˆ¶å™¨
      * @return array
      */
     public static function parseUrl($url, $depr = '/', $autoSearch = false)
@@ -1210,17 +1210,17 @@ class Route
 
         if (isset(self::$bind['module'])) {
             $bind = str_replace('/', $depr, self::$bind['module']);
-            // Èç¹ûÓĞÄ£¿é/¿ØÖÆÆ÷°ó¶¨
+            // å¦‚æœæœ‰æ¨¡å—/æ§åˆ¶å™¨ç»‘å®š
             $url = $bind . ('.' != substr($bind, -1) ? $depr : '') . ltrim($url, $depr);
         }
         $url              = str_replace($depr, '|', $url);
         list($path, $var) = self::parseUrlPath($url);
         $route            = [null, null, null];
         if (isset($path)) {
-            // ½âÎöÄ£¿é
+            // è§£ææ¨¡å—
             $module = Config::get('app_multi_module') ? array_shift($path) : null;
             if ($autoSearch) {
-                // ×Ô¶¯ËÑË÷¿ØÖÆÆ÷
+                // è‡ªåŠ¨æœç´¢æ§åˆ¶å™¨
                 $dir    = APP_PATH . ($module ? $module . DS : '') . Config::get('url_controller_layer');
                 $suffix = App::$suffix || Config::get('controller_suffix') ? ucfirst(Config::get('url_controller_layer')) : '';
                 $item   = [];
@@ -1243,16 +1243,16 @@ class Route
                     $controller = array_shift($path);
                 }
             } else {
-                // ½âÎö¿ØÖÆÆ÷
+                // è§£ææ§åˆ¶å™¨
                 $controller = !empty($path) ? array_shift($path) : null;
             }
-            // ½âÎö²Ù×÷
+            // è§£ææ“ä½œ
             $action = !empty($path) ? array_shift($path) : null;
-            // ½âÎö¶îÍâ²ÎÊı
+            // è§£æé¢å¤–å‚æ•°
             self::parseUrlParams(empty($path) ? '' : implode('|', $path));
-            // ·â×°Â·ÓÉ
+            // å°è£…è·¯ç”±
             $route = [$module, $controller, $action];
-            // ¼ì²éµØÖ·ÊÇ·ñ±»¶¨Òå¹ıÂ·ÓÉ
+            // æ£€æŸ¥åœ°å€æ˜¯å¦è¢«å®šä¹‰è¿‡è·¯ç”±
             $name  = strtolower($module . '/' . Loader::parseName($controller, 1) . '/' . $action);
             $name2 = '';
             if (empty($module) || isset($bind) && $module == $bind) {
@@ -1267,24 +1267,24 @@ class Route
     }
 
     /**
-     * ½âÎöURLµÄpathinfo²ÎÊıºÍ±äÁ¿
+     * è§£æURLçš„pathinfoå‚æ•°å’Œå˜é‡
      * @access private
-     * @param string    $url URLµØÖ·
+     * @param string    $url URLåœ°å€
      * @return array
      */
     private static function parseUrlPath($url)
     {
-        // ·Ö¸ô·ûÌæ»» È·±£Â·ÓÉ¶¨ÒåÊ¹ÓÃÍ³Ò»µÄ·Ö¸ô·û
+        // åˆ†éš”ç¬¦æ›¿æ¢ ç¡®ä¿è·¯ç”±å®šä¹‰ä½¿ç”¨ç»Ÿä¸€çš„åˆ†éš”ç¬¦
         $url = str_replace('|', '/', $url);
         $url = trim($url, '/');
         $var = [];
         if (false !== strpos($url, '?')) {
-            // [Ä£¿é/¿ØÖÆÆ÷/²Ù×÷?]²ÎÊı1=Öµ1&²ÎÊı2=Öµ2...
+            // [æ¨¡å—/æ§åˆ¶å™¨/æ“ä½œ?]å‚æ•°1=å€¼1&å‚æ•°2=å€¼2...
             $info = parse_url($url);
             $path = explode('/', $info['path']);
             parse_str($info['query'], $var);
         } elseif (strpos($url, '/')) {
-            // [Ä£¿é/¿ØÖÆÆ÷/²Ù×÷]
+            // [æ¨¡å—/æ§åˆ¶å™¨/æ“ä½œ]
             $path = explode('/', $url);
         } else {
             $path = [$url];
@@ -1293,11 +1293,11 @@ class Route
     }
 
     /**
-     * ¼ì²âURLºÍ¹æÔòÂ·ÓÉÊÇ·ñÆ¥Åä
+     * æ£€æµ‹URLå’Œè§„åˆ™è·¯ç”±æ˜¯å¦åŒ¹é…
      * @access private
-     * @param string    $url URLµØÖ·
-     * @param string    $rule Â·ÓÉ¹æÔò
-     * @param array     $pattern ±äÁ¿¹æÔò
+     * @param string    $url URLåœ°å€
+     * @param string    $rule è·¯ç”±è§„åˆ™
+     * @param array     $pattern å˜é‡è§„åˆ™
      * @return array|false
      */
     private static function match($url, $rule, $pattern)
@@ -1307,7 +1307,7 @@ class Route
 
         $var = [];
         foreach ($m2 as $key => $val) {
-            // valÖĞ¶¨ÒåÁË¶à¸ö±äÁ¿ <id><name>
+            // valä¸­å®šä¹‰äº†å¤šä¸ªå˜é‡ <id><name>
             if (false !== strpos($val, '<') && preg_match_all('/<(\w+(\??))>/', $val, $matches)) {
                 $value   = [];
                 $replace = [];
@@ -1335,20 +1335,20 @@ class Route
             }
 
             if (0 === strpos($val, '[:')) {
-                // ¿ÉÑ¡²ÎÊı
+                // å¯é€‰å‚æ•°
                 $val      = substr($val, 1, -1);
                 $optional = true;
             } else {
                 $optional = false;
             }
             if (0 === strpos($val, ':')) {
-                // URL±äÁ¿
+                // URLå˜é‡
                 $name = substr($val, 1);
                 if (!$optional && !isset($m1[$key])) {
                     return false;
                 }
                 if (isset($m1[$key]) && isset($pattern[$name])) {
-                    // ¼ì²é±äÁ¿¹æÔò
+                    // æ£€æŸ¥å˜é‡è§„åˆ™
                     if ($pattern[$name] instanceof \Closure) {
                         $result = call_user_func_array($pattern[$name], [$m1[$key]]);
                         if (false === $result) {
@@ -1363,27 +1363,27 @@ class Route
                 return false;
             }
         }
-        // ³É¹¦Æ¥Åäºó·µ»ØURLÖĞµÄ¶¯Ì¬±äÁ¿Êı×é
+        // æˆåŠŸåŒ¹é…åè¿”å›URLä¸­çš„åŠ¨æ€å˜é‡æ•°ç»„
         return $var;
     }
 
     /**
-     * ½âÎö¹æÔòÂ·ÓÉ
+     * è§£æè§„åˆ™è·¯ç”±
      * @access private
-     * @param string    $rule Â·ÓÉ¹æÔò
-     * @param string    $route Â·ÓÉµØÖ·
-     * @param string    $pathinfo URLµØÖ·
-     * @param array     $option Â·ÓÉ²ÎÊı
-     * @param array     $matches Æ¥ÅäµÄ±äÁ¿
+     * @param string    $rule è·¯ç”±è§„åˆ™
+     * @param string    $route è·¯ç”±åœ°å€
+     * @param string    $pathinfo URLåœ°å€
+     * @param array     $option è·¯ç”±å‚æ•°
+     * @param array     $matches åŒ¹é…çš„å˜é‡
      * @return array
      */
     private static function parseRule($rule, $route, $pathinfo, $option = [], $matches = [])
     {
         $request = Request::instance();
-        // ½âÎöÂ·ÓÉ¹æÔò
+        // è§£æè·¯ç”±è§„åˆ™
         if ($rule) {
             $rule = explode('/', $rule);
-            // »ñÈ¡URLµØÖ·ÖĞµÄ²ÎÊı
+            // è·å–URLåœ°å€ä¸­çš„å‚æ•°
             $paths = explode('|', $pathinfo);
             foreach ($rule as $item) {
                 $fun = '';
@@ -1394,7 +1394,7 @@ class Route
                     $var           = substr($item, 1);
                     $matches[$var] = array_shift($paths);
                 } else {
-                    // ¹ıÂËURLÖĞµÄ¾²Ì¬±äÁ¿
+                    // è¿‡æ»¤URLä¸­çš„é™æ€å˜é‡
                     array_shift($paths);
                 }
             }
@@ -1402,12 +1402,12 @@ class Route
             $paths = explode('|', $pathinfo);
         }
 
-        // »ñÈ¡Â·ÓÉµØÖ·¹æÔò
+        // è·å–è·¯ç”±åœ°å€è§„åˆ™
         if (is_string($route) && isset($option['prefix'])) {
-            // Â·ÓÉµØÖ·Ç°×º
+            // è·¯ç”±åœ°å€å‰ç¼€
             $route = $option['prefix'] . $route;
         }
-        // Ìæ»»Â·ÓÉµØÖ·ÖĞµÄ±äÁ¿
+        // æ›¿æ¢è·¯ç”±åœ°å€ä¸­çš„å˜é‡
         if (is_string($route) && !empty($matches)) {
             foreach ($matches as $key => $val) {
                 if (false !== strpos($route, ':' . $key)) {
@@ -1416,7 +1416,7 @@ class Route
             }
         }
 
-        // °ó¶¨Ä£ĞÍÊı¾İ
+        // ç»‘å®šæ¨¡å‹æ•°æ®
         if (isset($option['bind_model'])) {
             $bind = [];
             foreach ($option['bind_model'] as $key => $val) {
@@ -1458,12 +1458,12 @@ class Route
             Hook::add('response_send', $option['response']);
         }
 
-        // ½âÎö¶îÍâ²ÎÊı
+        // è§£æé¢å¤–å‚æ•°
         self::parseUrlParams(empty($paths) ? '' : implode('|', $paths), $matches);
-        // ¼ÇÂ¼Æ¥ÅäµÄÂ·ÓÉĞÅÏ¢
+        // è®°å½•åŒ¹é…çš„è·¯ç”±ä¿¡æ¯
         $request->routeInfo(['rule' => $rule, 'route' => $route, 'option' => $option, 'var' => $matches]);
 
-        // ¼ì²âÂ·ÓÉafterĞĞÎª
+        // æ£€æµ‹è·¯ç”±afterè¡Œä¸º
         if (!empty($option['after_behavior'])) {
             if ($option['after_behavior'] instanceof \Closure) {
                 $result = call_user_func_array($option['after_behavior'], []);
@@ -1475,7 +1475,7 @@ class Route
                     }
                 }
             }
-            // Â·ÓÉ¹æÔòÖØ¶¨Ïò
+            // è·¯ç”±è§„åˆ™é‡å®šå‘
             if ($result instanceof Response) {
                 return ['type' => 'response', 'response' => $result];
             } elseif (is_array($result)) {
@@ -1484,19 +1484,19 @@ class Route
         }
 
         if ($route instanceof \Closure) {
-            // Ö´ĞĞ±Õ°ü
+            // æ‰§è¡Œé—­åŒ…
             $result = ['type' => 'function', 'function' => $route];
         } elseif (0 === strpos($route, '/') || strpos($route, '://')) {
-            // Â·ÓÉµ½ÖØ¶¨ÏòµØÖ·
+            // è·¯ç”±åˆ°é‡å®šå‘åœ°å€
             $result = ['type' => 'redirect', 'url' => $route, 'status' => isset($option['status']) ? $option['status'] : 301];
         } elseif (false !== strpos($route, '\\')) {
-            // Â·ÓÉµ½·½·¨
+            // è·¯ç”±åˆ°æ–¹æ³•
             list($path, $var) = self::parseUrlPath($route);
             $route            = str_replace('/', '@', implode('/', $path));
             $method           = strpos($route, '@') ? explode('@', $route) : $route;
             $result           = ['type' => 'method', 'method' => $method, 'var' => $var];
         } elseif (0 === strpos($route, '@')) {
-            // Â·ÓÉµ½¿ØÖÆÆ÷
+            // è·¯ç”±åˆ°æ§åˆ¶å™¨
             $route             = substr($route, 1);
             list($route, $var) = self::parseUrlPath($route);
             $result            = ['type' => 'controller', 'controller' => implode('/', $route), 'var' => $var];
@@ -1505,10 +1505,10 @@ class Route
             $request->module($route ? array_pop($route) : Config::get('default_module'));
             App::$modulePath = APP_PATH . (Config::get('app_multi_module') ? $request->module() . DS : '');
         } else {
-            // Â·ÓÉµ½Ä£¿é/¿ØÖÆÆ÷/²Ù×÷
+            // è·¯ç”±åˆ°æ¨¡å—/æ§åˆ¶å™¨/æ“ä½œ
             $result = self::parseModule($route, isset($option['convert']) ? $option['convert'] : false);
         }
-        // ¿ªÆôÇëÇó»º´æ
+        // å¼€å¯è¯·æ±‚ç¼“å­˜
         if ($request->isGet() && isset($option['cache'])) {
             $cache = $option['cache'];
             if (is_array($cache)) {
@@ -1524,10 +1524,10 @@ class Route
     }
 
     /**
-     * ½âÎöURLµØÖ·Îª Ä£¿é/¿ØÖÆÆ÷/²Ù×÷
+     * è§£æURLåœ°å€ä¸º æ¨¡å—/æ§åˆ¶å™¨/æ“ä½œ
      * @access private
-     * @param string    $url URLµØÖ·
-     * @param bool      $convert ÊÇ·ñ×Ô¶¯×ª»»URLµØÖ·
+     * @param string    $url URLåœ°å€
+     * @param bool      $convert æ˜¯å¦è‡ªåŠ¨è½¬æ¢URLåœ°å€
      * @return array
      */
     private static function parseModule($url, $convert = false)
@@ -1538,20 +1538,20 @@ class Route
         $module           = Config::get('app_multi_module') && !empty($path) ? array_pop($path) : null;
         $method           = Request::instance()->method();
         if (Config::get('use_action_prefix') && !empty(self::$methodPrefix[$method])) {
-            // ²Ù×÷·½·¨Ç°×ºÖ§³Ö
+            // æ“ä½œæ–¹æ³•å‰ç¼€æ”¯æŒ
             $action = 0 !== strpos($action, self::$methodPrefix[$method]) ? self::$methodPrefix[$method] . $action : $action;
         }
-        // ÉèÖÃµ±Ç°ÇëÇóµÄÂ·ÓÉ±äÁ¿
+        // è®¾ç½®å½“å‰è¯·æ±‚çš„è·¯ç”±å˜é‡
         Request::instance()->route($var);
-        // Â·ÓÉµ½Ä£¿é/¿ØÖÆÆ÷/²Ù×÷
+        // è·¯ç”±åˆ°æ¨¡å—/æ§åˆ¶å™¨/æ“ä½œ
         return ['type' => 'module', 'module' => [$module, $controller, $action], 'convert' => $convert];
     }
 
     /**
-     * ½âÎöURLµØÖ·ÖĞµÄ²ÎÊıRequest¶ÔÏó
+     * è§£æURLåœ°å€ä¸­çš„å‚æ•°Requestå¯¹è±¡
      * @access private
-     * @param string    $url Â·ÓÉ¹æÔò
-     * @param array     $var ±äÁ¿
+     * @param string    $url è·¯ç”±è§„åˆ™
+     * @param array     $var å˜é‡
      * @return void
      */
     private static function parseUrlParams($url, &$var = [])
@@ -1565,14 +1565,14 @@ class Route
                 }, $url);
             }
         }
-        // ÉèÖÃµ±Ç°ÇëÇóµÄ²ÎÊı
+        // è®¾ç½®å½“å‰è¯·æ±‚çš„å‚æ•°
         Request::instance()->route($var);
     }
 
-    // ·ÖÎöÂ·ÓÉ¹æÔòÖĞµÄ±äÁ¿
+    // åˆ†æè·¯ç”±è§„åˆ™ä¸­çš„å˜é‡
     private static function parseVar($rule)
     {
-        // ÌáÈ¡Â·ÓÉ¹æÔòÖĞµÄ±äÁ¿
+        // æå–è·¯ç”±è§„åˆ™ä¸­çš„å˜é‡
         $var = [];
         foreach (explode('/', $rule) as $val) {
             $optional = false;
@@ -1589,12 +1589,12 @@ class Route
             }
 
             if (0 === strpos($val, '[:')) {
-                // ¿ÉÑ¡²ÎÊı
+                // å¯é€‰å‚æ•°
                 $optional = true;
                 $val      = substr($val, 1, -1);
             }
             if (0 === strpos($val, ':')) {
-                // URL±äÁ¿
+                // URLå˜é‡
                 $name       = substr($val, 1);
                 $var[$name] = $optional ? 2 : 1;
             }

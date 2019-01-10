@@ -19,32 +19,32 @@ use think\response\Xml as XmlResponse;
 
 class Response
 {
-    // Ô­Ê¼Êı¾İ
+    // åŸå§‹æ•°æ®
     protected $data;
 
-    // µ±Ç°µÄcontentType
+    // å½“å‰çš„contentType
     protected $contentType = 'text/html';
 
-    // ×Ö·û¼¯
+    // å­—ç¬¦é›†
     protected $charset = 'utf-8';
 
-    //×´Ì¬
+    //çŠ¶æ€
     protected $code = 200;
 
-    // Êä³ö²ÎÊı
+    // è¾“å‡ºå‚æ•°
     protected $options = [];
-    // header²ÎÊı
+    // headerå‚æ•°
     protected $header = [];
 
     protected $content = null;
 
     /**
-     * ¹¹Ôìº¯Êı
+     * æ„é€ å‡½æ•°
      * @access   public
-     * @param mixed $data    Êä³öÊı¾İ
+     * @param mixed $data    è¾“å‡ºæ•°æ®
      * @param int   $code
      * @param array $header
-     * @param array $options Êä³ö²ÎÊı
+     * @param array $options è¾“å‡ºå‚æ•°
      */
     public function __construct($data = '', $code = 200, array $header = [], $options = [])
     {
@@ -58,13 +58,13 @@ class Response
     }
 
     /**
-     * ´´½¨Response¶ÔÏó
+     * åˆ›å»ºResponseå¯¹è±¡
      * @access public
-     * @param mixed  $data    Êä³öÊı¾İ
-     * @param string $type    Êä³öÀàĞÍ
+     * @param mixed  $data    è¾“å‡ºæ•°æ®
+     * @param string $type    è¾“å‡ºç±»å‹
      * @param int    $code
      * @param array  $header
-     * @param array  $options Êä³ö²ÎÊı
+     * @param array  $options è¾“å‡ºå‚æ•°
      * @return Response|JsonResponse|ViewResponse|XmlResponse|RedirectResponse|JsonpResponse
      */
     public static function create($data = '', $type = '', $code = 200, array $header = [], $options = [])
@@ -80,20 +80,20 @@ class Response
     }
 
     /**
-     * ·¢ËÍÊı¾İµ½¿Í»§¶Ë
+     * å‘é€æ•°æ®åˆ°å®¢æˆ·ç«¯
      * @access public
      * @return mixed
      * @throws \InvalidArgumentException
      */
     public function send()
     {
-        // ¼àÌıresponse_send
+        // ç›‘å¬response_send
         Hook::listen('response_send', $this);
 
-        // ´¦ÀíÊä³öÊı¾İ
+        // å¤„ç†è¾“å‡ºæ•°æ®
         $data = $this->getContent();
 
-        // Traceµ÷ÊÔ×¢Èë
+        // Traceè°ƒè¯•æ³¨å…¥
         if (Env::get('app_trace', Config::get('app_trace'))) {
             Debug::inject($this, $data);
         }
@@ -109,9 +109,9 @@ class Response
         }
 
         if (!headers_sent() && !empty($this->header)) {
-            // ·¢ËÍ×´Ì¬Âë
+            // å‘é€çŠ¶æ€ç 
             http_response_code($this->code);
-            // ·¢ËÍÍ·²¿ĞÅÏ¢
+            // å‘é€å¤´éƒ¨ä¿¡æ¯
             foreach ($this->header as $name => $val) {
                 if (is_null($val)) {
                     header($name);
@@ -124,23 +124,23 @@ class Response
         echo $data;
 
         if (function_exists('fastcgi_finish_request')) {
-            // Ìá¸ßÒ³ÃæÏìÓ¦
+            // æé«˜é¡µé¢å“åº”
             fastcgi_finish_request();
         }
 
-        // ¼àÌıresponse_end
+        // ç›‘å¬response_end
         Hook::listen('response_end', $this);
 
-        // Çå¿Õµ±´ÎÇëÇóÓĞĞ§µÄÊı¾İ
+        // æ¸…ç©ºå½“æ¬¡è¯·æ±‚æœ‰æ•ˆçš„æ•°æ®
         if (!($this instanceof RedirectResponse)) {
             Session::flush();
         }
     }
 
     /**
-     * ´¦ÀíÊı¾İ
+     * å¤„ç†æ•°æ®
      * @access protected
-     * @param mixed $data Òª´¦ÀíµÄÊı¾İ
+     * @param mixed $data è¦å¤„ç†çš„æ•°æ®
      * @return mixed
      */
     protected function output($data)
@@ -149,9 +149,9 @@ class Response
     }
 
     /**
-     * Êä³öµÄ²ÎÊı
+     * è¾“å‡ºçš„å‚æ•°
      * @access public
-     * @param mixed $options Êä³ö²ÎÊı
+     * @param mixed $options è¾“å‡ºå‚æ•°
      * @return $this
      */
     public function options($options = [])
@@ -161,9 +161,9 @@ class Response
     }
 
     /**
-     * Êä³öÊı¾İÉèÖÃ
+     * è¾“å‡ºæ•°æ®è®¾ç½®
      * @access public
-     * @param mixed $data Êä³öÊı¾İ
+     * @param mixed $data è¾“å‡ºæ•°æ®
      * @return $this
      */
     public function data($data)
@@ -173,10 +173,10 @@ class Response
     }
 
     /**
-     * ÉèÖÃÏìÓ¦Í·
+     * è®¾ç½®å“åº”å¤´
      * @access public
-     * @param string|array $name  ²ÎÊıÃû
-     * @param string       $value ²ÎÊıÖµ
+     * @param string|array $name  å‚æ•°å
+     * @param string       $value å‚æ•°å€¼
      * @return $this
      */
     public function header($name, $value = null)
@@ -190,7 +190,7 @@ class Response
     }
 
     /**
-     * ÉèÖÃÒ³ÃæÊä³öÄÚÈİ
+     * è®¾ç½®é¡µé¢è¾“å‡ºå†…å®¹
      * @param $content
      * @return $this
      */
@@ -201,7 +201,7 @@ class Response
             '__toString',
         ])
         ) {
-            throw new \InvalidArgumentException(sprintf('variable type error£º %s', gettype($content)));
+            throw new \InvalidArgumentException(sprintf('variable type errorï¼š %s', gettype($content)));
         }
 
         $this->content = (string) $content;
@@ -210,8 +210,8 @@ class Response
     }
 
     /**
-     * ·¢ËÍHTTP×´Ì¬
-     * @param integer $code ×´Ì¬Âë
+     * å‘é€HTTPçŠ¶æ€
+     * @param integer $code çŠ¶æ€ç 
      * @return $this
      */
     public function code($code)
@@ -254,8 +254,8 @@ class Response
     }
 
     /**
-     * Ò³Ãæ»º´æ¿ØÖÆ
-     * @param string $cache ×´Ì¬Âë
+     * é¡µé¢ç¼“å­˜æ§åˆ¶
+     * @param string $cache çŠ¶æ€ç 
      * @return $this
      */
     public function cacheControl($cache)
@@ -265,9 +265,9 @@ class Response
     }
 
     /**
-     * Ò³ÃæÊä³öÀàĞÍ
-     * @param string $contentType Êä³öÀàĞÍ
-     * @param string $charset     Êä³ö±àÂë
+     * é¡µé¢è¾“å‡ºç±»å‹
+     * @param string $contentType è¾“å‡ºç±»å‹
+     * @param string $charset     è¾“å‡ºç¼–ç 
      * @return $this
      */
     public function contentType($contentType, $charset = 'utf-8')
@@ -277,8 +277,8 @@ class Response
     }
 
     /**
-     * »ñÈ¡Í·²¿ĞÅÏ¢
-     * @param string $name Í·²¿Ãû³Æ
+     * è·å–å¤´éƒ¨ä¿¡æ¯
+     * @param string $name å¤´éƒ¨åç§°
      * @return mixed
      */
     public function getHeader($name = '')
@@ -291,7 +291,7 @@ class Response
     }
 
     /**
-     * »ñÈ¡Ô­Ê¼Êı¾İ
+     * è·å–åŸå§‹æ•°æ®
      * @return mixed
      */
     public function getData()
@@ -300,7 +300,7 @@ class Response
     }
 
     /**
-     * »ñÈ¡Êä³öÊı¾İ
+     * è·å–è¾“å‡ºæ•°æ®
      * @return mixed
      */
     public function getContent()
@@ -313,7 +313,7 @@ class Response
                 '__toString',
             ])
             ) {
-                throw new \InvalidArgumentException(sprintf('variable type error£º %s', gettype($content)));
+                throw new \InvalidArgumentException(sprintf('variable type errorï¼š %s', gettype($content)));
             }
 
             $this->content = (string) $content;
@@ -322,7 +322,7 @@ class Response
     }
 
     /**
-     * »ñÈ¡×´Ì¬Âë
+     * è·å–çŠ¶æ€ç 
      * @return integer
      */
     public function getCode()

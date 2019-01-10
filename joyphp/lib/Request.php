@@ -14,33 +14,33 @@ namespace think;
 class Request
 {
     /**
-     * @var object ¶ÔÏóÊµÀı
+     * @var object å¯¹è±¡å®ä¾‹
      */
     protected static $instance;
 
     protected $method;
     /**
-     * @var string ÓòÃû£¨º¬Ğ­ÒéºÍ¶Ë¿Ú£©
+     * @var string åŸŸåï¼ˆå«åè®®å’Œç«¯å£ï¼‰
      */
     protected $domain;
 
     /**
-     * @var string URLµØÖ·
+     * @var string URLåœ°å€
      */
     protected $url;
 
     /**
-     * @var string »ù´¡URL
+     * @var string åŸºç¡€URL
      */
     protected $baseUrl;
 
     /**
-     * @var string µ±Ç°Ö´ĞĞµÄÎÄ¼ş
+     * @var string å½“å‰æ‰§è¡Œçš„æ–‡ä»¶
      */
     protected $baseFile;
 
     /**
-     * @var string ·ÃÎÊµÄROOTµØÖ·
+     * @var string è®¿é—®çš„ROOTåœ°å€
      */
     protected $root;
 
@@ -50,32 +50,32 @@ class Request
     protected $pathinfo;
 
     /**
-     * @var string pathinfo£¨²»º¬ºó×º£©
+     * @var string pathinfoï¼ˆä¸å«åç¼€ï¼‰
      */
     protected $path;
 
     /**
-     * @var array µ±Ç°Â·ÓÉĞÅÏ¢
+     * @var array å½“å‰è·¯ç”±ä¿¡æ¯
      */
     protected $routeInfo = [];
 
     /**
-     * @var array »·¾³±äÁ¿
+     * @var array ç¯å¢ƒå˜é‡
      */
     protected $env;
 
     /**
-     * @var array µ±Ç°µ÷¶ÈĞÅÏ¢
+     * @var array å½“å‰è°ƒåº¦ä¿¡æ¯
      */
     protected $dispatch = [];
     protected $module;
     protected $controller;
     protected $action;
-    // µ±Ç°ÓïÑÔ¼¯
+    // å½“å‰è¯­è¨€é›†
     protected $langset;
 
     /**
-     * @var array ÇëÇó²ÎÊı
+     * @var array è¯·æ±‚å‚æ•°
      */
     protected $param   = [];
     protected $get     = [];
@@ -90,7 +90,7 @@ class Request
     protected $header  = [];
 
     /**
-     * @var array ×ÊÔ´ÀàĞÍ
+     * @var array èµ„æºç±»å‹
      */
     protected $mimeType = [
         'xml'   => 'application/xml,text/xml,application/x-xml',
@@ -109,23 +109,23 @@ class Request
 
     protected $content;
 
-    // È«¾Ö¹ıÂË¹æÔò
+    // å…¨å±€è¿‡æ»¤è§„åˆ™
     protected $filter;
-    // HookÀ©Õ¹·½·¨
+    // Hookæ‰©å±•æ–¹æ³•
     protected static $hook = [];
-    // °ó¶¨µÄÊôĞÔ
+    // ç»‘å®šçš„å±æ€§
     protected $bind = [];
     // php://input
     protected $input;
-    // ÇëÇó»º´æ
+    // è¯·æ±‚ç¼“å­˜
     protected $cache;
-    // »º´æÊÇ·ñ¼ì²é
+    // ç¼“å­˜æ˜¯å¦æ£€æŸ¥
     protected $isCheckCache;
 
     /**
-     * ¹¹Ôìº¯Êı
+     * æ„é€ å‡½æ•°
      * @access protected
-     * @param array $options ²ÎÊı
+     * @param array $options å‚æ•°
      */
     protected function __construct($options = [])
     {
@@ -138,7 +138,7 @@ class Request
             $this->filter = Config::get('default_filter');
         }
 
-        // ±£´æ php://input
+        // ä¿å­˜ php://input
         $this->input = file_get_contents('php://input');
     }
 
@@ -153,9 +153,9 @@ class Request
     }
 
     /**
-     * Hook ·½·¨×¢Èë
+     * Hook æ–¹æ³•æ³¨å…¥
      * @access public
-     * @param string|array  $method ·½·¨Ãû
+     * @param string|array  $method æ–¹æ³•å
      * @param mixed         $callback callable
      * @return void
      */
@@ -169,9 +169,9 @@ class Request
     }
 
     /**
-     * ³õÊ¼»¯
+     * åˆå§‹åŒ–
      * @access public
-     * @param array $options ²ÎÊı
+     * @param array $options å‚æ•°
      * @return \think\Request
      */
     public static function instance($options = [])
@@ -183,11 +183,11 @@ class Request
     }
 
     /**
-     * ´´½¨Ò»¸öURLÇëÇó
+     * åˆ›å»ºä¸€ä¸ªURLè¯·æ±‚
      * @access public
-     * @param string    $uri URLµØÖ·
-     * @param string    $method ÇëÇóÀàĞÍ
-     * @param array     $params ÇëÇó²ÎÊı
+     * @param string    $uri URLåœ°å€
+     * @param string    $method è¯·æ±‚ç±»å‹
+     * @param array     $params è¯·æ±‚å‚æ•°
      * @param array     $cookie
      * @param array     $files
      * @param array     $server
@@ -262,9 +262,9 @@ class Request
     }
 
     /**
-     * ÉèÖÃ»ò»ñÈ¡µ±Ç°°üº¬Ğ­ÒéµÄÓòÃû
+     * è®¾ç½®æˆ–è·å–å½“å‰åŒ…å«åè®®çš„åŸŸå
      * @access public
-     * @param string $domain ÓòÃû
+     * @param string $domain åŸŸå
      * @return string
      */
     public function domain($domain = null)
@@ -279,9 +279,9 @@ class Request
     }
 
     /**
-     * ÉèÖÃ»ò»ñÈ¡µ±Ç°ÍêÕûURL °üÀ¨QUERY_STRING
+     * è®¾ç½®æˆ–è·å–å½“å‰å®Œæ•´URL åŒ…æ‹¬QUERY_STRING
      * @access public
-     * @param string|true $url URLµØÖ· true ´øÓòÃû»ñÈ¡
+     * @param string|true $url URLåœ°å€ true å¸¦åŸŸåè·å–
      * @return string
      */
     public function url($url = null)
@@ -306,9 +306,9 @@ class Request
     }
 
     /**
-     * ÉèÖÃ»ò»ñÈ¡µ±Ç°URL ²»º¬QUERY_STRING
+     * è®¾ç½®æˆ–è·å–å½“å‰URL ä¸å«QUERY_STRING
      * @access public
-     * @param string $url URLµØÖ·
+     * @param string $url URLåœ°å€
      * @return string
      */
     public function baseUrl($url = null)
@@ -324,9 +324,9 @@ class Request
     }
 
     /**
-     * ÉèÖÃ»ò»ñÈ¡µ±Ç°Ö´ĞĞµÄÎÄ¼ş SCRIPT_NAME
+     * è®¾ç½®æˆ–è·å–å½“å‰æ‰§è¡Œçš„æ–‡ä»¶ SCRIPT_NAME
      * @access public
-     * @param string $file µ±Ç°Ö´ĞĞµÄÎÄ¼ş
+     * @param string $file å½“å‰æ‰§è¡Œçš„æ–‡ä»¶
      * @return string
      */
     public function baseFile($file = null)
@@ -356,9 +356,9 @@ class Request
     }
 
     /**
-     * ÉèÖÃ»ò»ñÈ¡URL·ÃÎÊ¸ùµØÖ·
+     * è®¾ç½®æˆ–è·å–URLè®¿é—®æ ¹åœ°å€
      * @access public
-     * @param string $url URLµØÖ·
+     * @param string $url URLåœ°å€
      * @return string
      */
     public function root($url = null)
@@ -377,7 +377,7 @@ class Request
     }
 
     /**
-     * »ñÈ¡µ±Ç°ÇëÇóURLµÄpathinfoĞÅÏ¢£¨º¬URLºó×º£©
+     * è·å–å½“å‰è¯·æ±‚URLçš„pathinfoä¿¡æ¯ï¼ˆå«URLåç¼€ï¼‰
      * @access public
      * @return string
      */
@@ -385,15 +385,15 @@ class Request
     {
         if (is_null($this->pathinfo)) {
             if (isset($_GET[Config::get('var_pathinfo')])) {
-                // ÅĞ¶ÏURLÀïÃæÊÇ·ñÓĞ¼æÈİÄ£Ê½²ÎÊı
+                // åˆ¤æ–­URLé‡Œé¢æ˜¯å¦æœ‰å…¼å®¹æ¨¡å¼å‚æ•°
                 $_SERVER['PATH_INFO'] = $_GET[Config::get('var_pathinfo')];
                 unset($_GET[Config::get('var_pathinfo')]);
             } elseif (IS_CLI) {
-                // CLIÄ£Ê½ÏÂ index.php module/controller/action/params/...
+                // CLIæ¨¡å¼ä¸‹ index.php module/controller/action/params/...
                 $_SERVER['PATH_INFO'] = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : '';
             }
 
-            // ·ÖÎöPATHINFOĞÅÏ¢
+            // åˆ†æPATHINFOä¿¡æ¯
             if (!isset($_SERVER['PATH_INFO'])) {
                 foreach (Config::get('pathinfo_fetch') as $type) {
                     if (!empty($_SERVER[$type])) {
@@ -409,7 +409,7 @@ class Request
     }
 
     /**
-     * »ñÈ¡µ±Ç°ÇëÇóURLµÄpathinfoĞÅÏ¢(²»º¬URLºó×º)
+     * è·å–å½“å‰è¯·æ±‚URLçš„pathinfoä¿¡æ¯(ä¸å«URLåç¼€)
      * @access public
      * @return string
      */
@@ -419,13 +419,13 @@ class Request
             $suffix   = Config::get('url_html_suffix');
             $pathinfo = $this->pathinfo();
             if (false === $suffix) {
-                // ½ûÖ¹Î±¾²Ì¬·ÃÎÊ
+                // ç¦æ­¢ä¼ªé™æ€è®¿é—®
                 $this->path = $pathinfo;
             } elseif ($suffix) {
-                // È¥³ıÕı³£µÄURLºó×º
+                // å»é™¤æ­£å¸¸çš„URLåç¼€
                 $this->path = preg_replace('/\.(' . ltrim($suffix, '.') . ')$/i', '', $pathinfo);
             } else {
-                // ÔÊĞíÈÎºÎºó×º·ÃÎÊ
+                // å…è®¸ä»»ä½•åç¼€è®¿é—®
                 $this->path = preg_replace('/\.' . $this->ext() . '$/i', '', $pathinfo);
             }
         }
@@ -433,7 +433,7 @@ class Request
     }
 
     /**
-     * µ±Ç°URLµÄ·ÃÎÊºó×º
+     * å½“å‰URLçš„è®¿é—®åç¼€
      * @access public
      * @return string
      */
@@ -443,9 +443,9 @@ class Request
     }
 
     /**
-     * »ñÈ¡µ±Ç°ÇëÇóµÄÊ±¼ä
+     * è·å–å½“å‰è¯·æ±‚çš„æ—¶é—´
      * @access public
-     * @param bool $float ÊÇ·ñÊ¹ÓÃ¸¡µãÀàĞÍ
+     * @param bool $float æ˜¯å¦ä½¿ç”¨æµ®ç‚¹ç±»å‹
      * @return integer|float
      */
     public function time($float = false)
@@ -454,7 +454,7 @@ class Request
     }
 
     /**
-     * µ±Ç°ÇëÇóµÄ×ÊÔ´ÀàĞÍ
+     * å½“å‰è¯·æ±‚çš„èµ„æºç±»å‹
      * @access public
      * @return false|string
      */
@@ -477,10 +477,10 @@ class Request
     }
 
     /**
-     * ÉèÖÃ×ÊÔ´ÀàĞÍ
+     * è®¾ç½®èµ„æºç±»å‹
      * @access public
-     * @param string|array  $type ×ÊÔ´ÀàĞÍÃû
-     * @param string        $val ×ÊÔ´ÀàĞÍ
+     * @param string|array  $type èµ„æºç±»å‹å
+     * @param string        $val èµ„æºç±»å‹
      * @return void
      */
     public function mimeType($type, $val = '')
@@ -493,15 +493,15 @@ class Request
     }
 
     /**
-     * µ±Ç°µÄÇëÇóÀàĞÍ
+     * å½“å‰çš„è¯·æ±‚ç±»å‹
      * @access public
-     * @param bool $method  true »ñÈ¡Ô­Ê¼ÇëÇóÀàĞÍ
+     * @param bool $method  true è·å–åŸå§‹è¯·æ±‚ç±»å‹
      * @return string
      */
     public function method($method = false)
     {
         if (true === $method) {
-            // »ñÈ¡Ô­Ê¼ÇëÇóÀàĞÍ
+            // è·å–åŸå§‹è¯·æ±‚ç±»å‹
             return IS_CLI ? 'GET' : (isset($this->server['REQUEST_METHOD']) ? $this->server['REQUEST_METHOD'] : $_SERVER['REQUEST_METHOD']);
         } elseif (!$this->method) {
             if (isset($_POST[Config::get('var_method')])) {
@@ -517,7 +517,7 @@ class Request
     }
 
     /**
-     * ÊÇ·ñÎªGETÇëÇó
+     * æ˜¯å¦ä¸ºGETè¯·æ±‚
      * @access public
      * @return bool
      */
@@ -527,7 +527,7 @@ class Request
     }
 
     /**
-     * ÊÇ·ñÎªPOSTÇëÇó
+     * æ˜¯å¦ä¸ºPOSTè¯·æ±‚
      * @access public
      * @return bool
      */
@@ -537,7 +537,7 @@ class Request
     }
 
     /**
-     * ÊÇ·ñÎªPUTÇëÇó
+     * æ˜¯å¦ä¸ºPUTè¯·æ±‚
      * @access public
      * @return bool
      */
@@ -547,7 +547,7 @@ class Request
     }
 
     /**
-     * ÊÇ·ñÎªDELTEÇëÇó
+     * æ˜¯å¦ä¸ºDELTEè¯·æ±‚
      * @access public
      * @return bool
      */
@@ -557,7 +557,7 @@ class Request
     }
 
     /**
-     * ÊÇ·ñÎªHEADÇëÇó
+     * æ˜¯å¦ä¸ºHEADè¯·æ±‚
      * @access public
      * @return bool
      */
@@ -567,7 +567,7 @@ class Request
     }
 
     /**
-     * ÊÇ·ñÎªPATCHÇëÇó
+     * æ˜¯å¦ä¸ºPATCHè¯·æ±‚
      * @access public
      * @return bool
      */
@@ -577,7 +577,7 @@ class Request
     }
 
     /**
-     * ÊÇ·ñÎªOPTIONSÇëÇó
+     * æ˜¯å¦ä¸ºOPTIONSè¯·æ±‚
      * @access public
      * @return bool
      */
@@ -587,7 +587,7 @@ class Request
     }
 
     /**
-     * ÊÇ·ñÎªcli
+     * æ˜¯å¦ä¸ºcli
      * @access public
      * @return bool
      */
@@ -597,7 +597,7 @@ class Request
     }
 
     /**
-     * ÊÇ·ñÎªcgi
+     * æ˜¯å¦ä¸ºcgi
      * @access public
      * @return bool
      */
@@ -607,18 +607,18 @@ class Request
     }
 
     /**
-     * »ñÈ¡µ±Ç°ÇëÇóµÄ²ÎÊı
+     * è·å–å½“å‰è¯·æ±‚çš„å‚æ•°
      * @access public
-     * @param string|array  $name ±äÁ¿Ãû
-     * @param mixed         $default Ä¬ÈÏÖµ
-     * @param string|array  $filter ¹ıÂË·½·¨
+     * @param string|array  $name å˜é‡å
+     * @param mixed         $default é»˜è®¤å€¼
+     * @param string|array  $filter è¿‡æ»¤æ–¹æ³•
      * @return mixed
      */
     public function param($name = '', $default = null, $filter = '')
     {
         if (empty($this->param)) {
             $method = $this->method(true);
-            // ×Ô¶¯»ñÈ¡ÇëÇó±äÁ¿
+            // è‡ªåŠ¨è·å–è¯·æ±‚å˜é‡
             switch ($method) {
                 case 'POST':
                     $vars = $this->post(false);
@@ -631,11 +631,11 @@ class Request
                 default:
                     $vars = [];
             }
-            // µ±Ç°ÇëÇó²ÎÊıºÍURLµØÖ·ÖĞµÄ²ÎÊıºÏ²¢
+            // å½“å‰è¯·æ±‚å‚æ•°å’ŒURLåœ°å€ä¸­çš„å‚æ•°åˆå¹¶
             $this->param = array_merge($this->get(false), $vars, $this->route(false));
         }
         if (true === $name) {
-            // »ñÈ¡°üº¬ÎÄ¼şÉÏ´«ĞÅÏ¢µÄÊı×é
+            // è·å–åŒ…å«æ–‡ä»¶ä¸Šä¼ ä¿¡æ¯çš„æ•°ç»„
             $file = $this->file();
             $data = is_array($file) ? array_merge($this->param, $file) : $this->param;
             return $this->input($data, '', $default, $filter);
@@ -644,11 +644,11 @@ class Request
     }
 
     /**
-     * ÉèÖÃ»ñÈ¡Â·ÓÉ²ÎÊı
+     * è®¾ç½®è·å–è·¯ç”±å‚æ•°
      * @access public
-     * @param string|array  $name ±äÁ¿Ãû
-     * @param mixed         $default Ä¬ÈÏÖµ
-     * @param string|array  $filter ¹ıÂË·½·¨
+     * @param string|array  $name å˜é‡å
+     * @param mixed         $default é»˜è®¤å€¼
+     * @param string|array  $filter è¿‡æ»¤æ–¹æ³•
      * @return mixed
      */
     public function route($name = '', $default = null, $filter = '')
@@ -661,11 +661,11 @@ class Request
     }
 
     /**
-     * ÉèÖÃ»ñÈ¡GET²ÎÊı
+     * è®¾ç½®è·å–GETå‚æ•°
      * @access public
-     * @param string|array  $name ±äÁ¿Ãû
-     * @param mixed         $default Ä¬ÈÏÖµ
-     * @param string|array  $filter ¹ıÂË·½·¨
+     * @param string|array  $name å˜é‡å
+     * @param mixed         $default é»˜è®¤å€¼
+     * @param string|array  $filter è¿‡æ»¤æ–¹æ³•
      * @return mixed
      */
     public function get($name = '', $default = null, $filter = '')
@@ -681,11 +681,11 @@ class Request
     }
 
     /**
-     * ÉèÖÃ»ñÈ¡POST²ÎÊı
+     * è®¾ç½®è·å–POSTå‚æ•°
      * @access public
-     * @param string        $name ±äÁ¿Ãû
-     * @param mixed         $default Ä¬ÈÏÖµ
-     * @param string|array  $filter ¹ıÂË·½·¨
+     * @param string        $name å˜é‡å
+     * @param mixed         $default é»˜è®¤å€¼
+     * @param string|array  $filter è¿‡æ»¤æ–¹æ³•
      * @return mixed
      */
     public function post($name = '', $default = null, $filter = '')
@@ -706,11 +706,11 @@ class Request
     }
 
     /**
-     * ÉèÖÃ»ñÈ¡PUT²ÎÊı
+     * è®¾ç½®è·å–PUTå‚æ•°
      * @access public
-     * @param string|array      $name ±äÁ¿Ãû
-     * @param mixed             $default Ä¬ÈÏÖµ
-     * @param string|array      $filter ¹ıÂË·½·¨
+     * @param string|array      $name å˜é‡å
+     * @param mixed             $default é»˜è®¤å€¼
+     * @param string|array      $filter è¿‡æ»¤æ–¹æ³•
      * @return mixed
      */
     public function put($name = '', $default = null, $filter = '')
@@ -732,11 +732,11 @@ class Request
     }
 
     /**
-     * ÉèÖÃ»ñÈ¡DELETE²ÎÊı
+     * è®¾ç½®è·å–DELETEå‚æ•°
      * @access public
-     * @param string|array      $name ±äÁ¿Ãû
-     * @param mixed             $default Ä¬ÈÏÖµ
-     * @param string|array      $filter ¹ıÂË·½·¨
+     * @param string|array      $name å˜é‡å
+     * @param mixed             $default é»˜è®¤å€¼
+     * @param string|array      $filter è¿‡æ»¤æ–¹æ³•
      * @return mixed
      */
     public function delete($name = '', $default = null, $filter = '')
@@ -745,11 +745,11 @@ class Request
     }
 
     /**
-     * ÉèÖÃ»ñÈ¡PATCH²ÎÊı
+     * è®¾ç½®è·å–PATCHå‚æ•°
      * @access public
-     * @param string|array      $name ±äÁ¿Ãû
-     * @param mixed             $default Ä¬ÈÏÖµ
-     * @param string|array      $filter ¹ıÂË·½·¨
+     * @param string|array      $name å˜é‡å
+     * @param mixed             $default é»˜è®¤å€¼
+     * @param string|array      $filter è¿‡æ»¤æ–¹æ³•
      * @return mixed
      */
     public function patch($name = '', $default = null, $filter = '')
@@ -758,10 +758,10 @@ class Request
     }
 
     /**
-     * »ñÈ¡request±äÁ¿
-     * @param string        $name Êı¾İÃû³Æ
-     * @param string        $default Ä¬ÈÏÖµ
-     * @param string|array  $filter ¹ıÂË·½·¨
+     * è·å–requestå˜é‡
+     * @param string        $name æ•°æ®åç§°
+     * @param string        $default é»˜è®¤å€¼
+     * @param string|array  $filter è¿‡æ»¤æ–¹æ³•
      * @return mixed
      */
     public function request($name = '', $default = null, $filter = '')
@@ -777,11 +777,11 @@ class Request
     }
 
     /**
-     * »ñÈ¡sessionÊı¾İ
+     * è·å–sessionæ•°æ®
      * @access public
-     * @param string|array  $name Êı¾İÃû³Æ
-     * @param string        $default Ä¬ÈÏÖµ
-     * @param string|array  $filter ¹ıÂË·½·¨
+     * @param string|array  $name æ•°æ®åç§°
+     * @param string        $default é»˜è®¤å€¼
+     * @param string|array  $filter è¿‡æ»¤æ–¹æ³•
      * @return mixed
      */
     public function session($name = '', $default = null, $filter = '')
@@ -796,11 +796,11 @@ class Request
     }
 
     /**
-     * »ñÈ¡cookie²ÎÊı
+     * è·å–cookieå‚æ•°
      * @access public
-     * @param string|array  $name Êı¾İÃû³Æ
-     * @param string        $default Ä¬ÈÏÖµ
-     * @param string|array  $filter ¹ıÂË·½·¨
+     * @param string|array  $name æ•°æ®åç§°
+     * @param string        $default é»˜è®¤å€¼
+     * @param string|array  $filter è¿‡æ»¤æ–¹æ³•
      * @return mixed
      */
     public function cookie($name = '', $default = null, $filter = '')
@@ -816,7 +816,7 @@ class Request
             $data = $this->cookie;
         }
 
-        // ½âÎö¹ıÂËÆ÷
+        // è§£æè¿‡æ»¤å™¨
         $filter = $this->getFilter($filter, $default);
 
         if (is_array($data)) {
@@ -829,11 +829,11 @@ class Request
     }
 
     /**
-     * »ñÈ¡server²ÎÊı
+     * è·å–serverå‚æ•°
      * @access public
-     * @param string|array  $name Êı¾İÃû³Æ
-     * @param string        $default Ä¬ÈÏÖµ
-     * @param string|array  $filter ¹ıÂË·½·¨
+     * @param string|array  $name æ•°æ®åç§°
+     * @param string        $default é»˜è®¤å€¼
+     * @param string|array  $filter è¿‡æ»¤æ–¹æ³•
      * @return mixed
      */
     public function server($name = '', $default = null, $filter = '')
@@ -848,9 +848,9 @@ class Request
     }
 
     /**
-     * »ñÈ¡ÉÏ´«µÄÎÄ¼şĞÅÏ¢
+     * è·å–ä¸Šä¼ çš„æ–‡ä»¶ä¿¡æ¯
      * @access public
-     * @param string|array $name Ãû³Æ
+     * @param string|array $name åç§°
      * @return null|array|\think\File
      */
     public function file($name = '')
@@ -863,7 +863,7 @@ class Request
         }
         $files = $this->file;
         if (!empty($files)) {
-            // ´¦ÀíÉÏ´«ÎÄ¼ş
+            // å¤„ç†ä¸Šä¼ æ–‡ä»¶
             $array = [];
             foreach ($files as $key => $file) {
                 if (is_array($file['name'])) {
@@ -896,7 +896,7 @@ class Request
                 list($name, $sub) = explode('.', $name);
             }
             if ('' === $name) {
-                // »ñÈ¡È«²¿ÎÄ¼ş
+                // è·å–å…¨éƒ¨æ–‡ä»¶
                 return $array;
             } elseif (isset($sub) && isset($array[$name][$sub])) {
                 return $array[$name][$sub];
@@ -908,10 +908,10 @@ class Request
     }
 
     /**
-     * »ñÈ¡»·¾³±äÁ¿
-     * @param string|array  $name Êı¾İÃû³Æ
-     * @param string        $default Ä¬ÈÏÖµ
-     * @param string|array  $filter ¹ıÂË·½·¨
+     * è·å–ç¯å¢ƒå˜é‡
+     * @param string|array  $name æ•°æ®åç§°
+     * @param string        $default é»˜è®¤å€¼
+     * @param string|array  $filter è¿‡æ»¤æ–¹æ³•
      * @return mixed
      */
     public function env($name = '', $default = null, $filter = '')
@@ -926,10 +926,10 @@ class Request
     }
 
     /**
-     * ÉèÖÃ»òÕß»ñÈ¡µ±Ç°µÄHeader
+     * è®¾ç½®æˆ–è€…è·å–å½“å‰çš„Header
      * @access public
-     * @param string|array  $name headerÃû³Æ
-     * @param string        $default Ä¬ÈÏÖµ
+     * @param string|array  $name headeråç§°
+     * @param string        $default é»˜è®¤å€¼
      * @return string
      */
     public function header($name = '', $default = null)
@@ -966,33 +966,33 @@ class Request
     }
 
     /**
-     * »ñÈ¡±äÁ¿ Ö§³Ö¹ıÂËºÍÄ¬ÈÏÖµ
-     * @param array         $data Êı¾İÔ´
-     * @param string|false  $name ×Ö¶ÎÃû
-     * @param mixed         $default Ä¬ÈÏÖµ
-     * @param string|array  $filter ¹ıÂËº¯Êı
+     * è·å–å˜é‡ æ”¯æŒè¿‡æ»¤å’Œé»˜è®¤å€¼
+     * @param array         $data æ•°æ®æº
+     * @param string|false  $name å­—æ®µå
+     * @param mixed         $default é»˜è®¤å€¼
+     * @param string|array  $filter è¿‡æ»¤å‡½æ•°
      * @return mixed
      */
     public function input($data = [], $name = '', $default = null, $filter = '')
     {
         if (false === $name) {
-            // »ñÈ¡Ô­Ê¼Êı¾İ
+            // è·å–åŸå§‹æ•°æ®
             return $data;
         }
         $name = (string) $name;
         if ('' != $name) {
-            // ½âÎöname
+            // è§£æname
             if (strpos($name, '/')) {
                 list($name, $type) = explode('/', $name);
             } else {
                 $type = 's';
             }
-            // °´.²ğ·Ö³É¶àÎ¬Êı×é½øĞĞÅĞ¶Ï
+            // æŒ‰.æ‹†åˆ†æˆå¤šç»´æ•°ç»„è¿›è¡Œåˆ¤æ–­
             foreach (explode('.', $name) as $val) {
                 if (isset($data[$val])) {
                     $data = $data[$val];
                 } else {
-                    // ÎŞÊäÈëÊı¾İ£¬·µ»ØÄ¬ÈÏÖµ
+                    // æ— è¾“å…¥æ•°æ®ï¼Œè¿”å›é»˜è®¤å€¼
                     return $default;
                 }
             }
@@ -1001,7 +1001,7 @@ class Request
             }
         }
 
-        // ½âÎö¹ıÂËÆ÷
+        // è§£æè¿‡æ»¤å™¨
         $filter = $this->getFilter($filter, $default);
 
         if (is_array($data)) {
@@ -1012,15 +1012,15 @@ class Request
         }
 
         if (isset($type) && $data !== $default) {
-            // Ç¿ÖÆÀàĞÍ×ª»»
+            // å¼ºåˆ¶ç±»å‹è½¬æ¢
             $this->typeCast($data, $type);
         }
         return $data;
     }
 
     /**
-     * ÉèÖÃ»ò»ñÈ¡µ±Ç°µÄ¹ıÂË¹æÔò
-     * @param mixed $filter ¹ıÂË¹æÔò
+     * è®¾ç½®æˆ–è·å–å½“å‰çš„è¿‡æ»¤è§„åˆ™
+     * @param mixed $filter è¿‡æ»¤è§„åˆ™
      * @return mixed
      */
     public function filter($filter = null)
@@ -1050,10 +1050,10 @@ class Request
     }
 
     /**
-     * µİ¹é¹ıÂË¸ø¶¨µÄÖµ
-     * @param mixed     $value ¼üÖµ
-     * @param mixed     $key ¼üÃû
-     * @param array     $filters ¹ıÂË·½·¨+Ä¬ÈÏÖµ
+     * é€’å½’è¿‡æ»¤ç»™å®šçš„å€¼
+     * @param mixed     $value é”®å€¼
+     * @param mixed     $key é”®å
+     * @param array     $filters è¿‡æ»¤æ–¹æ³•+é»˜è®¤å€¼
      * @return mixed
      */
     private function filterValue(&$value, $key, $filters)
@@ -1061,19 +1061,19 @@ class Request
         $default = array_pop($filters);
         foreach ($filters as $filter) {
             if (is_callable($filter)) {
-                // µ÷ÓÃº¯Êı»òÕß·½·¨¹ıÂË
+                // è°ƒç”¨å‡½æ•°æˆ–è€…æ–¹æ³•è¿‡æ»¤
                 $value = call_user_func($filter, $value);
             } elseif (is_scalar($value)) {
                 if (false !== strpos($filter, '/')) {
-                    // ÕıÔò¹ıÂË
+                    // æ­£åˆ™è¿‡æ»¤
                     if (!preg_match($filter, $value)) {
-                        // Æ¥Åä²»³É¹¦·µ»ØÄ¬ÈÏÖµ
+                        // åŒ¹é…ä¸æˆåŠŸè¿”å›é»˜è®¤å€¼
                         $value = $default;
                         break;
                     }
                 } elseif (!empty($filter)) {
-                    // filterº¯Êı²»´æÔÚÊ±, ÔòÊ¹ÓÃfilter_var½øĞĞ¹ıÂË
-                    // filterÎª·ÇÕûĞÎÖµÊ±, µ÷ÓÃfilter_idÈ¡µÃ¹ıÂËid
+                    // filterå‡½æ•°ä¸å­˜åœ¨æ—¶, åˆ™ä½¿ç”¨filter_varè¿›è¡Œè¿‡æ»¤
+                    // filterä¸ºéæ•´å½¢å€¼æ—¶, è°ƒç”¨filter_idå–å¾—è¿‡æ»¤id
                     $value = filter_var($value, is_int($filter) ? $filter : filter_id($filter));
                     if (false === $value) {
                         $value = $default;
@@ -1086,21 +1086,21 @@ class Request
     }
 
     /**
-     * ¹ıÂË±íµ¥ÖĞµÄ±í´ïÊ½
+     * è¿‡æ»¤è¡¨å•ä¸­çš„è¡¨è¾¾å¼
      * @param string $value
      * @return void
      */
     public function filterExp(&$value)
     {
-        // ¹ıÂË²éÑ¯ÌØÊâ×Ö·û
+        // è¿‡æ»¤æŸ¥è¯¢ç‰¹æ®Šå­—ç¬¦
         if (is_string($value) && preg_match('/^(EXP|NEQ|GT|EGT|LT|ELT|OR|XOR|LIKE|NOTLIKE|NOT LIKE|NOT BETWEEN|NOTBETWEEN|BETWEEN|NOT EXISTS|NOTEXISTS|EXISTS|NOT NULL|NOTNULL|NULL|BETWEEN TIME|NOT BETWEEN TIME|NOTBETWEEN TIME|NOTIN|NOT IN|IN)$/i', $value)) {
             $value .= ' ';
         }
-        // TODO ÆäËû°²È«¹ıÂË
+        // TODO å…¶ä»–å®‰å…¨è¿‡æ»¤
     }
 
     /**
-     * Ç¿ÖÆÀàĞÍ×ª»»
+     * å¼ºåˆ¶ç±»å‹è½¬æ¢
      * @param string $data
      * @param string $type
      * @return mixed
@@ -1108,39 +1108,39 @@ class Request
     private function typeCast(&$data, $type)
     {
         switch (strtolower($type)) {
-            // Êı×é
+            // æ•°ç»„
             case 'a':
                 $data = (array) $data;
                 break;
-            // Êı×Ö
+            // æ•°å­—
             case 'd':
                 $data = (int) $data;
                 break;
-            // ¸¡µã
+            // æµ®ç‚¹
             case 'f':
                 $data = (float) $data;
                 break;
-            // ²¼¶û
+            // å¸ƒå°”
             case 'b':
                 $data = (boolean) $data;
                 break;
-            // ×Ö·û´®
+            // å­—ç¬¦ä¸²
             case 's':
             default:
                 if (is_scalar($data)) {
                     $data = (string) $data;
                 } else {
-                    throw new \InvalidArgumentException('variable type error£º' . gettype($data));
+                    throw new \InvalidArgumentException('variable type errorï¼š' . gettype($data));
                 }
         }
     }
 
     /**
-     * ÊÇ·ñ´æÔÚÄ³¸öÇëÇó²ÎÊı
+     * æ˜¯å¦å­˜åœ¨æŸä¸ªè¯·æ±‚å‚æ•°
      * @access public
-     * @param string    $name ±äÁ¿Ãû
-     * @param string    $type ±äÁ¿ÀàĞÍ
-     * @param bool      $checkEmpty ÊÇ·ñ¼ì²â¿ÕÖµ
+     * @param string    $name å˜é‡å
+     * @param string    $type å˜é‡ç±»å‹
+     * @param bool      $checkEmpty æ˜¯å¦æ£€æµ‹ç©ºå€¼
      * @return mixed
      */
     public function has($name, $type = 'param', $checkEmpty = false)
@@ -1150,7 +1150,7 @@ class Request
         } else {
             $param = $this->$type;
         }
-        // °´.²ğ·Ö³É¶àÎ¬Êı×é½øĞĞÅĞ¶Ï
+        // æŒ‰.æ‹†åˆ†æˆå¤šç»´æ•°ç»„è¿›è¡Œåˆ¤æ–­
         foreach (explode('.', $name) as $val) {
             if (isset($param[$val])) {
                 $param = $param[$val];
@@ -1162,10 +1162,10 @@ class Request
     }
 
     /**
-     * »ñÈ¡Ö¸¶¨µÄ²ÎÊı
+     * è·å–æŒ‡å®šçš„å‚æ•°
      * @access public
-     * @param string|array  $name ±äÁ¿Ãû
-     * @param string        $type ±äÁ¿ÀàĞÍ
+     * @param string|array  $name å˜é‡å
+     * @param string        $type å˜é‡ç±»å‹
      * @return mixed
      */
     public function only($name, $type = 'param')
@@ -1184,10 +1184,10 @@ class Request
     }
 
     /**
-     * ÅÅ³ıÖ¸¶¨²ÎÊı»ñÈ¡
+     * æ’é™¤æŒ‡å®šå‚æ•°è·å–
      * @access public
-     * @param string|array  $name ±äÁ¿Ãû
-     * @param string        $type ±äÁ¿ÀàĞÍ
+     * @param string|array  $name å˜é‡å
+     * @param string        $type å˜é‡ç±»å‹
      * @return mixed
      */
     public function except($name, $type = 'param')
@@ -1205,7 +1205,7 @@ class Request
     }
 
     /**
-     * µ±Ç°ÊÇ·ñssl
+     * å½“å‰æ˜¯å¦ssl
      * @access public
      * @return bool
      */
@@ -1227,9 +1227,9 @@ class Request
     }
 
     /**
-     * µ±Ç°ÊÇ·ñAjaxÇëÇó
+     * å½“å‰æ˜¯å¦Ajaxè¯·æ±‚
      * @access public
-     * @param bool $ajax  true »ñÈ¡Ô­Ê¼ajaxÇëÇó
+     * @param bool $ajax  true è·å–åŸå§‹ajaxè¯·æ±‚
      * @return bool
      */
     public function isAjax($ajax = false)
@@ -1244,9 +1244,9 @@ class Request
     }
 
     /**
-     * µ±Ç°ÊÇ·ñPjaxÇëÇó
+     * å½“å‰æ˜¯å¦Pjaxè¯·æ±‚
      * @access public
-     * @param bool $pjax  true »ñÈ¡Ô­Ê¼pjaxÇëÇó
+     * @param bool $pjax  true è·å–åŸå§‹pjaxè¯·æ±‚
      * @return bool
      */
     public function isPjax($pjax = false)
@@ -1260,9 +1260,9 @@ class Request
     }
 
     /**
-     * »ñÈ¡¿Í»§¶ËIPµØÖ·
-     * @param integer   $type ·µ»ØÀàĞÍ 0 ·µ»ØIPµØÖ· 1 ·µ»ØIPV4µØÖ·Êı×Ö
-     * @param boolean   $adv ÊÇ·ñ½øĞĞ¸ß¼¶Ä£Ê½»ñÈ¡£¨ÓĞ¿ÉÄÜ±»Î±×°£©
+     * è·å–å®¢æˆ·ç«¯IPåœ°å€
+     * @param integer   $type è¿”å›ç±»å‹ 0 è¿”å›IPåœ°å€ 1 è¿”å›IPV4åœ°å€æ•°å­—
+     * @param boolean   $adv æ˜¯å¦è¿›è¡Œé«˜çº§æ¨¡å¼è·å–ï¼ˆæœ‰å¯èƒ½è¢«ä¼ªè£…ï¼‰
      * @return mixed
      */
     public function ip($type = 0, $adv = true)
@@ -1293,14 +1293,14 @@ class Request
         } elseif (isset($_SERVER['REMOTE_ADDR'])) {
             $ip = $_SERVER['REMOTE_ADDR'];
         }
-        // IPµØÖ·ºÏ·¨ÑéÖ¤
+        // IPåœ°å€åˆæ³•éªŒè¯
         $long = sprintf("%u", ip2long($ip));
         $ip   = $long ? [$ip, $long] : ['0.0.0.0', 0];
         return $ip[$type];
     }
 
     /**
-     * ¼ì²âÊÇ·ñÊ¹ÓÃÊÖ»ú·ÃÎÊ
+     * æ£€æµ‹æ˜¯å¦ä½¿ç”¨æ‰‹æœºè®¿é—®
      * @access public
      * @return bool
      */
@@ -1320,7 +1320,7 @@ class Request
     }
 
     /**
-     * µ±Ç°URLµØÖ·ÖĞµÄscheme²ÎÊı
+     * å½“å‰URLåœ°å€ä¸­çš„schemeå‚æ•°
      * @access public
      * @return string
      */
@@ -1330,7 +1330,7 @@ class Request
     }
 
     /**
-     * µ±Ç°ÇëÇóURLµØÖ·ÖĞµÄquery²ÎÊı
+     * å½“å‰è¯·æ±‚URLåœ°å€ä¸­çš„queryå‚æ•°
      * @access public
      * @return string
      */
@@ -1340,9 +1340,9 @@ class Request
     }
 
     /**
-     * µ±Ç°ÇëÇóµÄhost
+     * å½“å‰è¯·æ±‚çš„host
      * @access public
-     * @param bool $strict  true ½ö½ö»ñÈ¡HOST
+     * @param bool $strict  true ä»…ä»…è·å–HOST
      * @return string
      */
     public function host($strict = false)
@@ -1357,7 +1357,7 @@ class Request
     }
 
     /**
-     * µ±Ç°ÇëÇóURLµØÖ·ÖĞµÄport²ÎÊı
+     * å½“å‰è¯·æ±‚URLåœ°å€ä¸­çš„portå‚æ•°
      * @access public
      * @return integer
      */
@@ -1367,7 +1367,7 @@ class Request
     }
 
     /**
-     * µ±Ç°ÇëÇó SERVER_PROTOCOL
+     * å½“å‰è¯·æ±‚ SERVER_PROTOCOL
      * @access public
      * @return integer
      */
@@ -1377,7 +1377,7 @@ class Request
     }
 
     /**
-     * µ±Ç°ÇëÇó REMOTE_PORT
+     * å½“å‰è¯·æ±‚ REMOTE_PORT
      * @access public
      * @return integer
      */
@@ -1387,7 +1387,7 @@ class Request
     }
 
     /**
-     * µ±Ç°ÇëÇó HTTP_CONTENT_TYPE
+     * å½“å‰è¯·æ±‚ HTTP_CONTENT_TYPE
      * @access public
      * @return string
      */
@@ -1406,9 +1406,9 @@ class Request
     }
 
     /**
-     * »ñÈ¡µ±Ç°ÇëÇóµÄÂ·ÓÉĞÅÏ¢
+     * è·å–å½“å‰è¯·æ±‚çš„è·¯ç”±ä¿¡æ¯
      * @access public
-     * @param array $route Â·ÓÉÃû³Æ
+     * @param array $route è·¯ç”±åç§°
      * @return array
      */
     public function routeInfo($route = [])
@@ -1421,9 +1421,9 @@ class Request
     }
 
     /**
-     * ÉèÖÃ»òÕß»ñÈ¡µ±Ç°ÇëÇóµÄµ÷¶ÈĞÅÏ¢
+     * è®¾ç½®æˆ–è€…è·å–å½“å‰è¯·æ±‚çš„è°ƒåº¦ä¿¡æ¯
      * @access public
-     * @param array  $dispatch µ÷¶ÈĞÅÏ¢
+     * @param array  $dispatch è°ƒåº¦ä¿¡æ¯
      * @return array
      */
     public function dispatch($dispatch = null)
@@ -1435,9 +1435,9 @@ class Request
     }
 
     /**
-     * ÉèÖÃ»òÕß»ñÈ¡µ±Ç°µÄÄ£¿éÃû
+     * è®¾ç½®æˆ–è€…è·å–å½“å‰çš„æ¨¡å—å
      * @access public
-     * @param string $module Ä£¿éÃû
+     * @param string $module æ¨¡å—å
      * @return string|Request
      */
     public function module($module = null)
@@ -1451,9 +1451,9 @@ class Request
     }
 
     /**
-     * ÉèÖÃ»òÕß»ñÈ¡µ±Ç°µÄ¿ØÖÆÆ÷Ãû
+     * è®¾ç½®æˆ–è€…è·å–å½“å‰çš„æ§åˆ¶å™¨å
      * @access public
-     * @param string $controller ¿ØÖÆÆ÷Ãû
+     * @param string $controller æ§åˆ¶å™¨å
      * @return string|Request
      */
     public function controller($controller = null)
@@ -1467,9 +1467,9 @@ class Request
     }
 
     /**
-     * ÉèÖÃ»òÕß»ñÈ¡µ±Ç°µÄ²Ù×÷Ãû
+     * è®¾ç½®æˆ–è€…è·å–å½“å‰çš„æ“ä½œå
      * @access public
-     * @param string $action ²Ù×÷Ãû
+     * @param string $action æ“ä½œå
      * @return string|Request
      */
     public function action($action = null)
@@ -1484,9 +1484,9 @@ class Request
     }
 
     /**
-     * ÉèÖÃ»òÕß»ñÈ¡µ±Ç°µÄÓïÑÔ
+     * è®¾ç½®æˆ–è€…è·å–å½“å‰çš„è¯­è¨€
      * @access public
-     * @param string $lang ÓïÑÔÃû
+     * @param string $lang è¯­è¨€å
      * @return string|Request
      */
     public function langset($lang = null)
@@ -1500,7 +1500,7 @@ class Request
     }
 
     /**
-     * ÉèÖÃ»òÕß»ñÈ¡µ±Ç°ÇëÇóµÄcontent
+     * è®¾ç½®æˆ–è€…è·å–å½“å‰è¯·æ±‚çš„content
      * @access public
      * @return string
      */
@@ -1513,7 +1513,7 @@ class Request
     }
 
     /**
-     * »ñÈ¡µ±Ç°ÇëÇóµÄphp://input
+     * è·å–å½“å‰è¯·æ±‚çš„php://input
      * @access public
      * @return string
      */
@@ -1523,10 +1523,10 @@ class Request
     }
 
     /**
-     * Éú³ÉÇëÇóÁîÅÆ
+     * ç”Ÿæˆè¯·æ±‚ä»¤ç‰Œ
      * @access public
-     * @param string $name ÁîÅÆÃû³Æ
-     * @param mixed  $type ÁîÅÆÉú³É·½·¨
+     * @param string $name ä»¤ç‰Œåç§°
+     * @param mixed  $type ä»¤ç‰Œç”Ÿæˆæ–¹æ³•
      * @return string
      */
     public function token($name = '__token__', $type = 'md5')
@@ -1541,12 +1541,12 @@ class Request
     }
 
     /**
-     * ÉèÖÃµ±Ç°µØÖ·µÄÇëÇó»º´æ
+     * è®¾ç½®å½“å‰åœ°å€çš„è¯·æ±‚ç¼“å­˜
      * @access public
-     * @param string $key »º´æ±êÊ¶£¬Ö§³Ö±äÁ¿¹æÔò £¬ÀıÈç item/:name/:id
-     * @param mixed  $expire »º´æÓĞĞ§ÆÚ
-     * @param array  $except »º´æÅÅ³ı
-     * @param string $tag    »º´æ±êÇ©
+     * @param string $key ç¼“å­˜æ ‡è¯†ï¼Œæ”¯æŒå˜é‡è§„åˆ™ ï¼Œä¾‹å¦‚ item/:name/:id
+     * @param mixed  $expire ç¼“å­˜æœ‰æ•ˆæœŸ
+     * @param array  $except ç¼“å­˜æ’é™¤
+     * @param string $tag    ç¼“å­˜æ ‡ç­¾
      * @return void
      */
     public function cache($key, $expire = null, $except = [], $tag = null)
@@ -1557,10 +1557,10 @@ class Request
         }
 
         if (false !== $key && $this->isGet() && !$this->isCheckCache) {
-            // ±ê¼ÇÇëÇó»º´æ¼ì²é
+            // æ ‡è®°è¯·æ±‚ç¼“å­˜æ£€æŸ¥
             $this->isCheckCache = true;
             if (false === $expire) {
-                // ¹Ø±Õµ±Ç°»º´æ
+                // å…³é—­å½“å‰ç¼“å­˜
                 return;
             }
             if ($key instanceof \Closure) {
@@ -1571,12 +1571,12 @@ class Request
                         return;
                     }
                 }
-                // ×Ô¶¯»º´æ¹¦ÄÜ
+                // è‡ªåŠ¨ç¼“å­˜åŠŸèƒ½
                 $key = '__URL__';
             } elseif (strpos($key, '|')) {
                 list($key, $fun) = explode('|', $key);
             }
-            // ÌØÊâ¹æÔòÌæ»»
+            // ç‰¹æ®Šè§„åˆ™æ›¿æ¢
             if (false !== strpos($key, '__')) {
                 $key = str_replace(['__MODULE__', '__CONTROLLER__', '__ACTION__', '__URL__', ''], [$this->module, $this->controller, $this->action, md5($this->url(true))], $key);
             }
@@ -1590,7 +1590,7 @@ class Request
                 }
             } elseif (strpos($key, ']')) {
                 if ('[' . $this->ext() . ']' == $key) {
-                    // »º´æÄ³¸öºó×ºµÄÇëÇó
+                    // ç¼“å­˜æŸä¸ªåç¼€çš„è¯·æ±‚
                     $key = md5($this->url());
                 } else {
                     return;
@@ -1601,7 +1601,7 @@ class Request
             }
 
             if (strtotime($this->server('HTTP_IF_MODIFIED_SINCE')) + $expire > $_SERVER['REQUEST_TIME']) {
-                // ¶ÁÈ¡»º´æ
+                // è¯»å–ç¼“å­˜
                 $response = Response::create()->code(304);
                 throw new \think\exception\HttpResponseException($response);
             } elseif (Cache::has($key)) {
@@ -1615,7 +1615,7 @@ class Request
     }
 
     /**
-     * ¶ÁÈ¡ÇëÇó»º´æÉèÖÃ
+     * è¯»å–è¯·æ±‚ç¼“å­˜è®¾ç½®
      * @access public
      * @return array
      */
@@ -1625,10 +1625,10 @@ class Request
     }
 
     /**
-     * ÉèÖÃµ±Ç°ÇëÇó°ó¶¨µÄ¶ÔÏóÊµÀı
+     * è®¾ç½®å½“å‰è¯·æ±‚ç»‘å®šçš„å¯¹è±¡å®ä¾‹
      * @access public
-     * @param string|array $name °ó¶¨µÄ¶ÔÏó±êÊ¶
-     * @param mixed  $obj °ó¶¨µÄ¶ÔÏóÊµÀı
+     * @param string|array $name ç»‘å®šçš„å¯¹è±¡æ ‡è¯†
+     * @param mixed  $obj ç»‘å®šçš„å¯¹è±¡å®ä¾‹
      * @return mixed
      */
     public function bind($name, $obj = null)

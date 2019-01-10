@@ -6,26 +6,26 @@ namespace joyphp;
 class Loader
 {
     /**
-     * @var array ÊµÀıÊı×é
+     * @var array å®ä¾‹æ•°ç»„
      */
     protected static $instance = [];
 
     /**
-     * @var array ÀàÃûÓ³Éä
+     * @var array ç±»åæ˜ å°„
      */
     protected static $map = [];
     
     /**
-     * @var array ÃüÃû¿Õ¼äÄ¿Â¼Ó³Éä
+     * @var array å‘½åç©ºé—´ç›®å½•æ˜ å°„
      */
     protected static $mapDirs = [];
     
     public static function register($autoload = null)
     {
-        // ×¢²áÏµÍ³×Ô¶¯¼ÓÔØ
+        // æ³¨å†Œç³»ç»Ÿè‡ªåŠ¨åŠ è½½
         spl_autoload_register($autoload ?: '\\joyphp\\Loader::autoLoad', true, true);
         
-        // ×¢²áÃüÃû¿Õ¼ä¶¨Òå
+        // æ³¨å†Œå‘½åç©ºé—´å®šä¹‰
         self::addMapDir ([
             'joyphp'    => LIB_PATH,
             'trait'   => TRAIT_PATH,
@@ -37,7 +37,7 @@ class Loader
 
         if ($file = self::parseFile($class)) {
             
-            // ·Ç Win »·¾³ÑÏ¸ñÇø·Ö´óĞ¡Ğ´
+            // é Win ç¯å¢ƒä¸¥æ ¼åŒºåˆ†å¤§å°å†™
             if (IS_WIN || pathinfo($file, PATHINFO_FILENAME) == pathinfo(realpath($file), PATHINFO_FILENAME)) {
                 //echo '<br>',pathinfo($file, PATHINFO_FILENAME),':',pathinfo(realpath($file), PATHINFO_FILENAME);exit;
                 return include($file);
@@ -48,19 +48,19 @@ class Loader
     }
     
     /**
-     * ¼ì²éÎÄ¼ş
+     * æ£€æŸ¥æ–‡ä»¶
      * @access private
-     * @param  string $class ÀàÃû
+     * @param  string $class ç±»å
      * @return bool|string
      */
     private static function parseFile($class)
     {
-        // Àà¿âÓ³Éä
+        // ç±»åº“æ˜ å°„
         if (!empty(self::$map[$class])) {
             return self::$map[$class];
         }
         //echo $class;
-        // ²éÕÒ PSR-4
+        // æŸ¥æ‰¾ PSR-4
         $class=strtr($class, '\\', DS);
         $tmp=explode(DS,$class);
         $first=$tmp[0];
@@ -71,7 +71,7 @@ class Loader
                 return $file;
             }
         }
-        // ÕÒ²»µ½ÔòÉèÖÃÓ³ÉäÎª false ²¢·µ»Ø
+        // æ‰¾ä¸åˆ°åˆ™è®¾ç½®æ˜ å°„ä¸º false å¹¶è¿”å›
         return self::$map[$class] = false;
     }
     
