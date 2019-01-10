@@ -1,15 +1,6 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006~2018 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
-// +----------------------------------------------------------------------
 
-namespace think;
+namespace joyphp;
 
 class Request
 {
@@ -140,32 +131,6 @@ class Request
 
         // 保存 php://input
         $this->input = file_get_contents('php://input');
-    }
-
-    public function __call($method, $args)
-    {
-        if (array_key_exists($method, self::$hook)) {
-            array_unshift($args, $this);
-            return call_user_func_array(self::$hook[$method], $args);
-        } else {
-            throw new Exception('method not exists:' . __CLASS__ . '->' . $method);
-        }
-    }
-
-    /**
-     * Hook 方法注入
-     * @access public
-     * @param string|array  $method 方法名
-     * @param mixed         $callback callable
-     * @return void
-     */
-    public static function hook($method, $callback = null)
-    {
-        if (is_array($method)) {
-            self::$hook = array_merge(self::$hook, $method);
-        } else {
-            self::$hook[$method] = $callback;
-        }
     }
 
     /**

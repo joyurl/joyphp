@@ -7,15 +7,15 @@ namespace joyphp;
 class Config
 {
     /**
-     * @var array ÅäÖÃ²ÎÊı
+     * @var array é…ç½®å‚æ•°
      */
     private static $config = [];
     
     /**
-     * ¼ÓÔØÅäÖÃÎÄ¼ş£¨PHP¸ñÊ½£©
+     * åŠ è½½é…ç½®æ–‡ä»¶ï¼ˆPHPæ ¼å¼ï¼‰
      * @access public
-     * @param  string $file  ÅäÖÃÎÄ¼şÃû£¨Ö§³ÖPHP,ini,XML,JSONËÄÖÖ¸ñÊ½£©
-     * @param  string $name  ÅäÖÃÃû£¨ÈçÉèÖÃ¼´±íÊ¾¶ş¼¶ÅäÖÃ£©
+     * @param  string $file  é…ç½®æ–‡ä»¶åï¼ˆæ”¯æŒPHP,ini,XML,JSONå››ç§æ ¼å¼ï¼‰
+     * @param  string $name  é…ç½®åï¼ˆå¦‚è®¾ç½®å³è¡¨ç¤ºäºŒçº§é…ç½®ï¼‰
      * @return mixed
      * 
      */
@@ -48,19 +48,19 @@ class Config
     }
 
     /**
-     * ÉèÖÃÅäÖÃ²ÎÊı name ÎªÊı×éÔòÎªÅúÁ¿ÉèÖÃ
+     * è®¾ç½®é…ç½®å‚æ•° name ä¸ºæ•°ç»„åˆ™ä¸ºæ‰¹é‡è®¾ç½®
      * @access public
-     * @param  string|array $name  ÅäÖÃ²ÎÊıÃû£¨Ö§³Ö¶ş¼¶ÅäÖÃ . ºÅ·Ö¸î£©
-     * @param  mixed        $value ÅäÖÃÖµ
+     * @param  string|array $name  é…ç½®å‚æ•°åï¼ˆæ”¯æŒäºŒçº§é…ç½® . å·åˆ†å‰²ï¼‰
+     * @param  mixed        $value é…ç½®å€¼
      * @return mixed
      */
     public static function set($name, $value = null)
     {
 
-        // ×Ö·û´®Ôò±íÊ¾µ¥¸öÅäÖÃÉèÖÃ
+        // å­—ç¬¦ä¸²åˆ™è¡¨ç¤ºå•ä¸ªé…ç½®è®¾ç½®
         if (is_string($name) and !empty($name)) {
             $name = strtolower($name);
-            //Ò»¼¶ÅäÖÃ
+            //ä¸€çº§é…ç½®
             if (!strpos($name, '.')) {
                 if(is_array($value) and isset(self::$config[$name])){
                     $value = array_change_key_case($value);
@@ -68,7 +68,7 @@ class Config
                 }
                 self::$config[$name] = $value;
             } else {
-                // ¶ş¼¶ÅäÖÃ£¨²»ÔÙÖ§³ÖÊı×éºÏ²¢£©
+                // äºŒçº§é…ç½®ï¼ˆä¸å†æ”¯æŒæ•°ç»„åˆå¹¶ï¼‰
                 $keys = explode('.', $name, 2);
                 self::$config[$keys[0]][$keys[1]] = $value;
             }
@@ -76,7 +76,7 @@ class Config
             return $value;
         }
 
-        // Êı×éÔò±íÊ¾ÅúÁ¿ÉèÖÃ
+        // æ•°ç»„åˆ™è¡¨ç¤ºæ‰¹é‡è®¾ç½®
         if (is_array($name)) {
             $name=array_change_key_case($name);
             return self::$config = array_merge(self::$config, $name);
@@ -86,32 +86,32 @@ class Config
             return self::$config = array_merge(self::$config, $value);
         }
 
-        // Îª¿ÕÖ±½Ó·µ»ØÒÑÓĞÅäÖÃ
+        // ä¸ºç©ºç›´æ¥è¿”å›å·²æœ‰é…ç½®
         return self::$config;
     }
     
     
     /**
-     * »ñÈ¡ÅäÖÃ²ÎÊı Îª¿ÕÔò»ñÈ¡ËùÓĞÅäÖÃ
+     * è·å–é…ç½®å‚æ•° ä¸ºç©ºåˆ™è·å–æ‰€æœ‰é…ç½®
      * @access public
-     * @param  string $name ÅäÖÃ²ÎÊıÃû£¨Ö§³Ö¶ş¼¶ÅäÖÃ . ºÅ·Ö¸î£©
-     * @param  string $range  ×÷ÓÃÓò
+     * @param  string $name é…ç½®å‚æ•°åï¼ˆæ”¯æŒäºŒçº§é…ç½® . å·åˆ†å‰²ï¼‰
+     * @param  string $range  ä½œç”¨åŸŸ
      * @return mixed
      */
     public static function get($name = null)
     {
-        // ÎŞ²ÎÊıÊ±»ñÈ¡ËùÓĞ
+        // æ— å‚æ•°æ—¶è·å–æ‰€æœ‰
         if (empty($name) && isset(self::$config)) {
             return self::$config;
         }
 
-        // Ò»¼¶ÅäÖÃÖ±½Ó·µ»Ø
+        // ä¸€çº§é…ç½®ç›´æ¥è¿”å›
         $name = strtolower($name);
         if (!strpos($name, '.')) {
             return isset(self::$config[$name]) ? self::$config[$name] : null;
         }
 
-        // ¶ş¼¶ÅäÖÃ
+        // äºŒçº§é…ç½®
         $keys    = explode('.', $name, 2);
         $keys[0] = strtolower($keys[0]);
 
