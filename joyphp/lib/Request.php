@@ -1,5 +1,6 @@
 <?php
 
+
 namespace joyphp;
 
 class Request
@@ -147,85 +148,7 @@ class Request
         return self::$instance;
     }
 
-    /**
-     * 创建一个URL请求
-     * @access public
-     * @param string    $uri URL地址
-     * @param string    $method 请求类型
-     * @param array     $params 请求参数
-     * @param array     $cookie
-     * @param array     $files
-     * @param array     $server
-     * @param string    $content
-     * @return \think\Request
-     */
-    public static function create($uri, $method = 'GET', $params = [], $cookie = [], $files = [], $server = [], $content = null)
-    {
-        $server['PATH_INFO']      = '';
-        $server['REQUEST_METHOD'] = strtoupper($method);
-        $info                     = parse_url($uri);
-        if (isset($info['host'])) {
-            $server['SERVER_NAME'] = $info['host'];
-            $server['HTTP_HOST']   = $info['host'];
-        }
-        if (isset($info['scheme'])) {
-            if ('https' === $info['scheme']) {
-                $server['HTTPS']       = 'on';
-                $server['SERVER_PORT'] = 443;
-            } else {
-                unset($server['HTTPS']);
-                $server['SERVER_PORT'] = 80;
-            }
-        }
-        if (isset($info['port'])) {
-            $server['SERVER_PORT'] = $info['port'];
-            $server['HTTP_HOST']   = $server['HTTP_HOST'] . ':' . $info['port'];
-        }
-        if (isset($info['user'])) {
-            $server['PHP_AUTH_USER'] = $info['user'];
-        }
-        if (isset($info['pass'])) {
-            $server['PHP_AUTH_PW'] = $info['pass'];
-        }
-        if (!isset($info['path'])) {
-            $info['path'] = '/';
-        }
-        $options                      = [];
-        $options[strtolower($method)] = $params;
-        $queryString                  = '';
-        if (isset($info['query'])) {
-            parse_str(html_entity_decode($info['query']), $query);
-            if (!empty($params)) {
-                $params      = array_replace($query, $params);
-                $queryString = http_build_query($params, '', '&');
-            } else {
-                $params      = $query;
-                $queryString = $info['query'];
-            }
-        } elseif (!empty($params)) {
-            $queryString = http_build_query($params, '', '&');
-        }
-        if ($queryString) {
-            parse_str($queryString, $get);
-            $options['get'] = isset($options['get']) ? array_merge($get, $options['get']) : $get;
-        }
-
-        $server['REQUEST_URI']  = $info['path'] . ('' !== $queryString ? '?' . $queryString : '');
-        $server['QUERY_STRING'] = $queryString;
-        $options['cookie']      = $cookie;
-        $options['param']       = $params;
-        $options['file']        = $files;
-        $options['server']      = $server;
-        $options['url']         = $server['REQUEST_URI'];
-        $options['baseUrl']     = $info['path'];
-        $options['pathinfo']    = '/' == $info['path'] ? '/' : ltrim($info['path'], '/');
-        $options['method']      = $server['REQUEST_METHOD'];
-        $options['domain']      = isset($info['scheme']) ? $info['scheme'] . '://' . $server['HTTP_HOST'] : '';
-        $options['content']     = $content;
-        self::$instance         = new self($options);
-        return self::$instance;
-    }
-
+    
     /**
      * 设置或获取当前包含协议的域名
      * @access public
@@ -608,6 +531,7 @@ class Request
         return $this->input($this->param, $name, $default, $filter);
     }
 
+    
     /**
      * 设置获取路由参数
      * @access public
@@ -1063,43 +987,7 @@ class Request
         }
         // TODO 其他安全过滤
     }
-
-    /**
-     * 强制类型转换
-     * @param string $data
-     * @param string $type
-     * @return mixed
-     */
-    private function typeCast(&$data, $type)
-    {
-        switch (strtolower($type)) {
-            // 数组
-            case 'a':
-                $data = (array) $data;
-                break;
-            // 数字
-            case 'd':
-                $data = (int) $data;
-                break;
-            // 浮点
-            case 'f':
-                $data = (float) $data;
-                break;
-            // 布尔
-            case 'b':
-                $data = (boolean) $data;
-                break;
-            // 字符串
-            case 's':
-            default:
-                if (is_scalar($data)) {
-                    $data = (string) $data;
-                } else {
-                    throw new \InvalidArgumentException('variable type error：' . gettype($data));
-                }
-        }
-    }
-
+   
     /**
      * 是否存在某个请求参数
      * @access public
@@ -1275,9 +1163,7 @@ class Request
             return true;
         } elseif (isset($_SERVER['HTTP_ACCEPT']) && strpos(strtoupper($_SERVER['HTTP_ACCEPT']), "VND.WAP.WML")) {
             return true;
-        } elseif (isset($_SERVER['HTTP_X_WAP_PROFILE']) || isset($_SERVER['HTTP_PROFILE'])) {
-            return true;
-        } elseif (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/(blackberry|configuration\/cldc|hp |hp-|htc |htc_|htc-|iemobile|kindle|midp|mmp|motorola|mobile|nokia|opera mini|opera |Googlebot-Mobile|YahooSeeker\/M1A1-R2D2|android|iphone|ipod|mobi|palm|palmos|pocket|portalmmm|ppc;|smartphone|sonyericsson|sqh|spv|symbian|treo|up.browser|up.link|vodafone|windows ce|xda |xda_)/i', $_SERVER['HTTP_USER_AGENT'])) {
+        } elseif (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/(blackberry|Googlebot-Mobile|android|iphone|ipod|windows ce)/i', $_SERVER['HTTP_USER_AGENT'])) {
             return true;
         } else {
             return false;
@@ -1505,118 +1391,4 @@ class Request
         return $token;
     }
 
-    /**
-     * 设置当前地址的请求缓存
-     * @access public
-     * @param string $key 缓存标识，支持变量规则 ，例如 item/:name/:id
-     * @param mixed  $expire 缓存有效期
-     * @param array  $except 缓存排除
-     * @param string $tag    缓存标签
-     * @return void
-     */
-    public function cache($key, $expire = null, $except = [], $tag = null)
-    {
-        if (!is_array($except)) {
-            $tag    = $except;
-            $except = [];
-        }
-
-        if (false !== $key && $this->isGet() && !$this->isCheckCache) {
-            // 标记请求缓存检查
-            $this->isCheckCache = true;
-            if (false === $expire) {
-                // 关闭当前缓存
-                return;
-            }
-            if ($key instanceof \Closure) {
-                $key = call_user_func_array($key, [$this]);
-            } elseif (true === $key) {
-                foreach ($except as $rule) {
-                    if (0 === stripos($this->url(), $rule)) {
-                        return;
-                    }
-                }
-                // 自动缓存功能
-                $key = '__URL__';
-            } elseif (strpos($key, '|')) {
-                list($key, $fun) = explode('|', $key);
-            }
-            // 特殊规则替换
-            if (false !== strpos($key, '__')) {
-                $key = str_replace(['__MODULE__', '__CONTROLLER__', '__ACTION__', '__URL__', ''], [$this->module, $this->controller, $this->action, md5($this->url(true))], $key);
-            }
-
-            if (false !== strpos($key, ':')) {
-                $param = $this->param();
-                foreach ($param as $item => $val) {
-                    if (is_string($val) && false !== strpos($key, ':' . $item)) {
-                        $key = str_replace(':' . $item, $val, $key);
-                    }
-                }
-            } elseif (strpos($key, ']')) {
-                if ('[' . $this->ext() . ']' == $key) {
-                    // 缓存某个后缀的请求
-                    $key = md5($this->url());
-                } else {
-                    return;
-                }
-            }
-            if (isset($fun)) {
-                $key = $fun($key);
-            }
-
-            if (strtotime($this->server('HTTP_IF_MODIFIED_SINCE')) + $expire > $_SERVER['REQUEST_TIME']) {
-                // 读取缓存
-                $response = Response::create()->code(304);
-                throw new \think\exception\HttpResponseException($response);
-            } elseif (Cache::has($key)) {
-                list($content, $header) = Cache::get($key);
-                $response               = Response::create($content)->header($header);
-                throw new \think\exception\HttpResponseException($response);
-            } else {
-                $this->cache = [$key, $expire, $tag];
-            }
-        }
-    }
-
-    /**
-     * 读取请求缓存设置
-     * @access public
-     * @return array
-     */
-    public function getCache()
-    {
-        return $this->cache;
-    }
-
-    /**
-     * 设置当前请求绑定的对象实例
-     * @access public
-     * @param string|array $name 绑定的对象标识
-     * @param mixed  $obj 绑定的对象实例
-     * @return mixed
-     */
-    public function bind($name, $obj = null)
-    {
-        if (is_array($name)) {
-            $this->bind = array_merge($this->bind, $name);
-        } else {
-            $this->bind[$name] = $obj;
-        }
-    }
-
-    public function __set($name, $value)
-    {
-        $this->bind[$name] = $value;
-    }
-
-    public function __get($name)
-    {
-        return isset($this->bind[$name]) ? $this->bind[$name] : null;
-    }
-
-    public function __isset($name)
-    {
-        return isset($this->bind[$name]);
-    }
 }
